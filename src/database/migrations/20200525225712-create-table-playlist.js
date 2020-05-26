@@ -2,33 +2,36 @@
 
 module.exports = {
   // up: (queryInterface, Sequelize) => {
-  //   return queryInterface.createTable('questions', {
+  //   return queryInterface.createTable('playlist', {
   //     id: {
   //       type: Sequelize.INTEGER,
   //       primaryKey: true,
   //       autoIncrement: true,
   //       allowNull: false,
   //     },
-  //     experience: {
+  //     owner_list: {
   //       type: Sequelize.STRING,
   //       allowNull: false,
   //     },
-  //     tool: {
+  //     name: {
   //       type: Sequelize.STRING,
   //       allowNull: false,
   //     },
-  //     use_case: {
+  //     issues: {
   //       type: Sequelize.STRING,
   //       allowNull: false,
+  //       get() {
+  //         return this.getDataValue('issues').split(';')
+  //       },
+  //       set(val) {
+  //         this.setDataValue('issues', val.join(';'));
+  //       },
   //     },
-  //     interests: {
-  //       type: Sequelize.STRING,
-  //       allowNull: false,
-  //     }
   //   });
+
   // },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('questions');
+    return queryInterface.dropTable('playlist');
   }
 };

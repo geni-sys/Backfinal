@@ -2,26 +2,30 @@
 
 module.exports = {
   // up: (queryInterface, Sequelize) => {
-  //   return queryInterface.createTable('questions', {
+  //   return queryInterface.createTable('shared_learnig', {
   //     id: {
   //       type: Sequelize.INTEGER,
   //       primaryKey: true,
   //       autoIncrement: true,
   //       allowNull: false,
   //     },
-  //     experience: {
+  //     user_one: {
   //       type: Sequelize.STRING,
   //       allowNull: false,
   //     },
-  //     tool: {
+  //     user_two: {
   //       type: Sequelize.STRING,
   //       allowNull: false,
   //     },
-  //     use_case: {
+  //     status_one: {
   //       type: Sequelize.STRING,
   //       allowNull: false,
   //     },
-  //     interests: {
+  //     status_two: {
+  //       type: Sequelize.STRING,
+  //       allowNull: false,
+  //     },
+  //     issue_learing: {
   //       type: Sequelize.STRING,
   //       allowNull: false,
   //     }
@@ -29,6 +33,17 @@ module.exports = {
   // },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('questions');
+
+    return queryInterface.dropTable('shared_learnig');
+
   }
 };
+
+/**
+ * get() {
+          return this.getDataValue('issues_created').split(';')
+        },
+        set(val) {
+          this.setDataValue('issues_created', val.join(';'));
+        },
+ */
