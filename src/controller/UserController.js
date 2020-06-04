@@ -26,24 +26,37 @@ module.exports = {
 
   // "DELETAR USUÁRIO"
   async destroy(req, res) {
-    const {
-      email,
-      account
-    } = req.body
+    const user_logado = req.params.user_logado
     const authHeader = req.headers.authorization
 
     let user = null
 
-    if (!conpareteData(email, account)) {
-      return res.status(404).send({
+    console.log(authHeader)
+
+    user = await User.findOne({
+      where: {
+        id: user_logado
+      }
+    })
+    if (!user) {
+      return res.status(400).json({
+        error: "Account not found"
+      })
+    }
+
+    // se o logado esta deletando
+    if (!(Number(user_logado) === Number(req.userID))) {
+      console.log(user_logado, req.userID)
+      return res.status(400).send({
         error: "Only can delete your account"
       })
     }
 
+    // caso esta identificado corretamente
     try {
       user = await User.destroy({
         where: {
-          email
+          id: user_logado,
         }
       })
 

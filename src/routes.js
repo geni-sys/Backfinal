@@ -11,7 +11,7 @@ routes.post('/authenticate', userAuthController.login)
 // "USER"
 // routes.use(authMidleware)
 routes.get('/users', authMidleware, userController.index)
-routes.post('/users/delete', authMidleware, userController.destroy)
+routes.delete('/users/:user_logado/delete', authMidleware, userController.destroy)
 
 
 module.exports = routes
