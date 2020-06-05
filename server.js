@@ -25,5 +25,5 @@ app.use(routes);
 
 // "LISTENERS"
 app.listen(process.env.PORT || 3000, () => {
-  console.log("Server is running..");
+  console.log("Server is running in PORT=" + process.env.PORT);
 });

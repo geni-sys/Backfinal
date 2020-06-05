@@ -46,7 +46,6 @@ module.exports = {
 
     // se o logado esta deletando
     if (!(Number(user_logado) === Number(req.userID))) {
-      console.log(user_logado, req.userID)
       return res.status(400).send({
         error: "Only can delete your account"
       })
@@ -69,6 +68,52 @@ module.exports = {
 
     return res.status(404).send({
       error: "Account not regitered"
+    })
+  },
+
+  // "SET QUESTIONS"
+  async setQuestion(req, res) {
+    const user_logado = req.params.user_logado
+    const {
+      experience,
+      tool,
+      use_case,
+      interests
+    } = req.body
+
+    let user = null
+
+    user = await User.findOne({
+      where: {
+        id: user_logado
+      }
+    })
+    if (!user) {
+      return res.status(400).json({
+        error: "Account not found"
+      })
+    }
+
+    if (!(Number(user_logado) === Number(req.userID))) {
+      return res.status(400).send({
+        error: "Only can reply your questions!"
+      })
+    }
+
+    const {
+      id,
+      email
+    } = user
+
+    return res.json({
+      user: {
+        id,
+        email
+      },
+      experience,
+      tool,
+      use_case,
+      interests
     })
   }
 }
