@@ -14,6 +14,14 @@ class Questions extends Model {
       sequelize,
     });
   }
+
+  static associate(models) {
+    this.belongsToMany(models.User, {
+      foreignKey: 'questions_id',
+      through: 'user_question',
+      as: 'users'
+    })
+  }
 }
 
 

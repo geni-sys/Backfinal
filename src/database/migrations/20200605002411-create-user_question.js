@@ -2,28 +2,32 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('questions', {
+    return queryInterface.createTable('user_question', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      experience: {
-        type: Sequelize.STRING,
+      user_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+        refereces: {
+          model: 'users',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
-      tool: {
-        type: Sequelize.STRING,
+      questions_id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-      },
-      use_case: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      interests: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        refereces: {
+          model: 'questions',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       created_at: {
         type: Sequelize.DATE,
@@ -37,6 +41,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('questions');
+    return queryInterface.dropTable('user_question');
   }
 };

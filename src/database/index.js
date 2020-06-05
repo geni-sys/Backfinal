@@ -14,4 +14,8 @@ User.beforeCreate(hooks.useHashToCripto)
 // "QUESTIONS DEFINITION"
 Questions.init(connection)
 
+// "ASSOCIATIONS"
+User.associate(connection.models)
+Questions.associate(connection.models)
+
 module.exports = connection
