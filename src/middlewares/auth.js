@@ -35,6 +35,7 @@ module.exports = (req, res, next) => {
     }
 
     req.userID = decoded.id
+    console.log(decoded)
 
     return next()
   })

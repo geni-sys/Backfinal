@@ -1,33 +1,42 @@
 'use strict';
 
-/**
- * Table of Auth
- */
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('users', {
+    return queryInterface.createTable('issue', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      name: {
+      owner: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+        allowNull: false,
+      },
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      email: {
-        type: Sequelize.STRING,
-        unique: true,
-        allowNull: false,
-      },
-      password: {
+      body: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      canny: {
-        type: Sequelize.BOOLEAN,
+      tags: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      language: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      link: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       created_at: {
@@ -42,6 +51,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('users');
+    return queryInterface.dropTable('issue');
   }
 };

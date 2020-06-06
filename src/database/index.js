@@ -3,6 +3,7 @@ const dbConfig = require('../config/database')
 const hooks = require('./hooks.js')
 
 const User = require('../model/User')
+const Issue = require('../model/Issue')
 const Questions = require('../model/Questions')
 
 const connection = new Sequelize(dbConfig)
@@ -14,8 +15,14 @@ User.beforeCreate(hooks.useHashToCripto)
 // "QUESTIONS DEFINITION"
 Questions.init(connection)
 
+// "ISSUE DEFINITION"
+Issue.init(connection)
+
 // "ASSOCIATIONS"
 User.associate(connection.models)
+User.associateIssue(connection.models)
 Questions.associate(connection.models)
+Issue.associate(connection.models)
+
 
 module.exports = connection

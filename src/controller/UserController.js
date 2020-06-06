@@ -1,5 +1,4 @@
 const User = require('../model/User')
-const Questions = require('../model/Questions')
 
 module.exports = {
   // "LISTAR USUÁRIOS"
@@ -40,6 +39,8 @@ module.exports = {
         error: "Account not found"
       })
     }
+
+    console.log(req.userID)
 
     // se o logado esta deletando
     if (!(Number(user_logado) === Number(req.userID))) {

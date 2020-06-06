@@ -27,9 +27,6 @@ module.exports = {
         })
       }
 
-      console.log(password)
-      console.log(user.password)
-
       if (!(await bcrypt.compare(password, user.password))) {
         return res.status(400).send({
           error: "Invalid password"
@@ -53,12 +50,16 @@ module.exports = {
     })
   },
 
-  // "CRIAR USUÁRIO"
+  // "CRIAR USUÁRIO" || "/:adm/register"
   async store(req, res) {
+    const {
+      adm
+    } = req.params
     const {
       name,
       email,
-      password
+      password,
+      canny
     } = req.body
 
     let user = null;
@@ -74,11 +75,22 @@ module.exports = {
         })
       }
 
-      user = await User.create({
-        name,
-        email,
-        password
-      })
+      // Se é adm
+      if (adm === 1) {
+        user = await User.create({
+          name,
+          email,
+          password,
+          canny
+        })
+      } else {
+        user = await User.create({
+          name,
+          email,
+          password,
+          canny
+        })
+      }
 
       user.password = undefined
     } catch (err) {
@@ -94,5 +106,6 @@ module.exports = {
         id: user.id
       })
     })
-  }
+  },
+
 }
