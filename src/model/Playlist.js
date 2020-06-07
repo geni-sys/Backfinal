@@ -13,16 +13,26 @@ class Playlist extends Model {
     });
   }
 
-  // "WITH ISSUE N-N"
   static associate(models) {
+    // "WITH ISSUE N-N"
     this.belongsToMany(models.Issue, {
       foreignKey: 'list',
       through: 'playlist_and_issue',
       as: 'issues'
     })
-  }
 
+    // WITH USER 1-N
+    this.belongsTo(models.User, {
+      foreignKey: 'owner',
+      as: 'user'
+    })
+  }
 }
+
+/**
+ * belongsTo:
+ * ::foreignKey: a coluna dentro de Playlist que representa o suário
+ */
 
 
 module.exports = Playlist;

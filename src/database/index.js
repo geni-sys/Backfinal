@@ -7,6 +7,7 @@ const Issue = require('../model/Issue')
 const Questions = require('../model/Questions')
 const UserStatus = require('../model/UserStatus')
 const Playlist = require('../model/Playlist')
+const PlaylistAndIssue = require('../model/PlaylistAndIssue')
 
 const connection = new Sequelize(dbConfig)
 
@@ -14,27 +15,20 @@ const connection = new Sequelize(dbConfig)
 User.init(connection)
 User.beforeCreate(hooks.useHashToCripto)
 
-// "QUESTIONS DEFINITION"
+// "INITIAL DEFINITION"
 Questions.init(connection)
-
-// "ISSUE DEFINITION"
 Issue.init(connection)
-
-// "STATUS DEFINITION"
 UserStatus.init(connection)
-
-// "PLAYLIST DEFINITION"
 Playlist.init(connection)
+PlaylistAndIssue.init(connection)
 
 // "ASSOCIATIONS"
 User.associate(connection.models)
-User.associateIssue(connection.models)
-User.associateStatus(connection.models)
-Questions.associate(connection.models)
-
 Issue.associate(connection.models)
-
+Playlist.associate(connection.models)
 UserStatus.associate(connection.models)
+Questions.associate(connection.models)
+PlaylistAndIssue.associate(connection.models)
 
 
 module.exports = connection

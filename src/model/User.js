@@ -15,34 +15,48 @@ class User extends Model {
     });
   }
 
-  // "ISSUE RELATION 1-N"
-  static associateIssue(models) {
+  static associate(models) {
+    // "ISSUE RELATION 1-N"
     this.hasMany(models.Issue, {
       foreignKey: 'owner',
       as: 'issues'
     })
-  }
 
-  // "STATUS RELATION 1-N"
-  static associateStatus(models) {
+    // "STATUS RELATION 1-N" || so quando for necessário
     this.hasMany(models.UserStatus, {
       foreignKey: 'user',
       as: 'u_status'
     })
-  }
 
-  // "QUESTION RELATION N-N "
-  static associate(models) {
+    // "QUESTION RELATION N-N "
     this.belongsToMany(models.Questions, {
       foreignKey: 'user_id',
       through: 'user_question',
       as: 'questions'
     })
-  }
 
-  // "PLAYLIST RELATION 1-N"
-  static associatePlaylist(models) {}
+    // "PLAYLIST RELATION 1-N"
+    this.hasMany(models.Playlist, {
+      foreignKey: 'owner',
+      as: 'lists'
+    })
+  }
 }
+
+/**
+ * [model: USER]
+ * hasMany: 1-N
+ * :: foreignKey: campo de identificação do model onde se relaciona
+ *
+ * .hasMany(list, { foreignKey: 'id_na_list' })
+ * ----------------------------------
+ *
+ * [model: LIST]
+ * belongsTo: 1-N
+ * :: foreignKey: campo de indentificação do model atual
+ *
+ * .belongsTo(User, { foreignKey: 'id_da_tabela_atual: list' })
+ */
 
 
 module.exports = User;

@@ -23,18 +23,20 @@ class Issue extends Model {
       foreignKey: 'owner',
       as: 'user'
     })
-  }
 
-  // "PLAYLIST RELATION N-N"
-  static associateList(models) {
+    // "PLAYLIST RELATION N-N"
     this.belongsToMany(models.Playlist, {
-      foreignKey: 'user_id',
+      foreignKey: 'issue',
       through: 'playlist_and_issue',
-      as: 'list'
+      as: 'lists'
     })
   }
-
 }
+
+/**
+ * belengsToMany:
+ * ::foreighKey: a chave dentro da tabela relacionando [ N - N ]
+ */
 
 
 module.exports = Issue
