@@ -15,7 +15,7 @@ class User extends Model {
     });
   }
 
-  // "ISSUE RELATION"
+  // "ISSUE RELATION 1-N"
   static associateIssue(models) {
     this.hasMany(models.Issue, {
       foreignKey: 'owner',
@@ -23,12 +23,28 @@ class User extends Model {
     })
   }
 
-  // "QUESTION RELATION"
+  // "STATUS RELATION 1-N"
+  static associateStatus(models) {
+    this.hasMany(models.UserStatus, {
+      foreignKey: 'user',
+      as: 'u_status'
+    })
+  }
+
+  // "QUESTION RELATION N-N "
   static associate(models) {
     this.belongsToMany(models.Questions, {
       foreignKey: 'user_id',
       through: 'user_question',
       as: 'questions'
+    })
+  }
+
+  // "PLAYLIST RELATION 1-N"
+  static associatePlaylist(models) {
+    this.hasMany(models.Playlist, {
+      foreignKey: 'owner',
+      as: 'u_list'
     })
   }
 }

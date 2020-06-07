@@ -15,6 +15,7 @@ class UserStatus extends Model {
       approximate: DataTypes.STRING,
     }, {
       sequelize,
+      tableName: 'status_user'
     })
   }
 

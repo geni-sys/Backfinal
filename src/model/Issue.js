@@ -17,10 +17,19 @@ class Issue extends Model {
     })
   }
 
+  // "USER RELATION 1-N"
   static associate(models) {
     this.belongsTo(models.User, {
       foreignKey: 'owner',
       as: 'user'
+    })
+  }
+
+  // "PLAYLIST RELATION 1-N"
+  static associateList(models) {
+    this.belongsTo(models.Playlist, {
+      foreignKey: 'issues',
+      as: 'i_list'
     })
   }
 }

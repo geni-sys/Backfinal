@@ -5,6 +5,8 @@ const userAuthController = require('./controller/auth/UserAuthController')
 const userController = require('./controller/UserController')
 const QuestionsController = require('./controller/QuestionsController')
 const issueController = require('./controller/IssueController')
+const UserStatusController = require('./controller/UserStatusController')
+const PlaylistController = require('./controller/PlaylistController')
 
 // "AUTH USER"
 routes.post('/:adm/register', userAuthController.store)
@@ -24,6 +26,14 @@ routes.get('/users/:user_logado/questions', authMidleware, QuestionsController.i
 routes.get('/user/:owner_id/issues', authMidleware, issueController.index)
 routes.post('/user/:owner_id/new/issue', authMidleware, issueController.store)
 routes.delete('/admin/:admin_id/destroy/issue/:issue_id', authMidleware, issueController.destroy)
+
+// "USER HANDLE STATUS"
+routes.post('/user/:user_id/status', UserStatusController.store)
+routes.get('/user/:user_id/status', UserStatusController.index)
+
+// "HANDLE PLAYLIST"
+routes.get('/playlists', PlaylistController.index)
+routes.post('user/:user_id/playlist/create', PlaylistController.store)
 
 
 module.exports = routes
