@@ -1,11 +1,20 @@
 const User = require('../model/User')
 const Playlist = require('../model/Playlist')
+const Issue = require('../model/Issue')
 
 module.exports = {
   // "LISTAR PLAYLIST"
   async index(req, res) {
+    const {
+      list_id
+    } = req.params
 
-    const playlist = await Playlist.findAll()
+    const playlist = await Playlist.findAll({
+      include: {
+        association: 'list',
+        association: 'issues'
+      },
+    })
 
     return res.json(playlist)
   },
@@ -15,7 +24,10 @@ module.exports = {
     const {
       user_id
     } = req.params
-    const {} = req.body
+    const {
+      name,
+      issue_id
+    } = req.body
 
     if (!await User.findByPk(user_id)) {
       return res.status(400).json({
@@ -23,7 +35,17 @@ module.exports = {
       })
     }
 
-    const playlist = await Playlist.create({})
+    if (!await Issue.findByPk(issue_id)) {
+      return res.status(400).json({
+        message: 'Error Issue not found OR deleted'
+      })
+    }
+
+    const playlist = await Playlist.create({
+      owner: user_id,
+      name,
+      issues: issue_id,
+    })
 
     return res.json(playlist)
   },

@@ -26,12 +26,7 @@ class Issue extends Model {
   }
 
   // "PLAYLIST RELATION 1-N"
-  static associateList(models) {
-    this.belongsTo(models.Playlist, {
-      foreignKey: 'issues',
-      as: 'i_list'
-    })
-  }
+
 }
 
 

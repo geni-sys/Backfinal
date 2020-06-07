@@ -33,11 +33,8 @@ User.associateStatus(connection.models)
 Questions.associate(connection.models)
 
 Issue.associate(connection.models)
-// Issue.associateList(connection.models)
 
 UserStatus.associate(connection.models)
 
-Playlist.associate(connection.models)
-Playlist.associateIssue(connection.models)
 
 module.exports = connection

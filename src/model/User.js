@@ -41,12 +41,7 @@ class User extends Model {
   }
 
   // "PLAYLIST RELATION 1-N"
-  static associatePlaylist(models) {
-    this.hasMany(models.Playlist, {
-      foreignKey: 'owner',
-      as: 'u_list'
-    })
-  }
+  static associatePlaylist(models) {}
 }
 
 

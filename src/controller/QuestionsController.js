@@ -33,11 +33,7 @@ module.exports = {
     let user = null
 
     // "VERIFICAÇÃO"
-    user = await User.findOne({
-      where: {
-        id: user_logado
-      }
-    })
+    user = await User.findByPk(user_logado)
     if (!user) {
       return res.status(400).json({
         error: "Account not found"

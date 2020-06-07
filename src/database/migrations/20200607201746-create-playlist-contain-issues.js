@@ -3,25 +3,32 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
 
-    return queryInterface.createTable('playlist', {
+    return queryInterface.createTable('playlist_and_issue', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      owner: {
+      list: {
         type: Sequelize.INTEGER,
         allowNull: false,
         refereces: {
-          model: 'users',
+          model: 'playlist',
           key: 'id'
         },
         onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
-      name: {
-        type: Sequelize.STRING,
+      issue: {
+        type: Sequelize.INTEGER,
         allowNull: false,
+        refereces: {
+          model: 'issue',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       created_at: {
         type: Sequelize.DATE,
@@ -36,6 +43,6 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
 
-    return queryInterface.dropTable('playlist');
+    return queryInterface.dropTable('playlist_and_issue');
   }
 };

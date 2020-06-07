@@ -32,8 +32,8 @@ routes.post('/user/:user_id/status', UserStatusController.store)
 routes.get('/user/:user_id/status', UserStatusController.index)
 
 // "HANDLE PLAYLIST"
-routes.get('/playlists', PlaylistController.index)
-routes.post('user/:user_id/playlist/create', PlaylistController.store)
+routes.get('/playlists/:list_id', PlaylistController.index)
+routes.post('/user/:user_id/create/playlist', PlaylistController.store)
 
 
 module.exports = routes
