@@ -13,8 +13,13 @@ class Playlist extends Model {
     });
   }
 
+  // "WITH ISSUE N-N"
   static associate(models) {
-
+    this.belongsToMany(models.Issue, {
+      foreignKey: 'list',
+      through: 'playlist_and_issue',
+      as: 'issues'
+    })
   }
 
 }

@@ -25,7 +25,14 @@ class Issue extends Model {
     })
   }
 
-  // "PLAYLIST RELATION 1-N"
+  // "PLAYLIST RELATION N-N"
+  static associateList(models) {
+    this.belongsToMany(models.Playlist, {
+      foreignKey: 'user_id',
+      through: 'playlist_and_issue',
+      as: 'list'
+    })
+  }
 
 }
 
