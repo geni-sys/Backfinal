@@ -8,6 +8,7 @@ const Questions = require('../model/Questions')
 const UserStatus = require('../model/UserStatus')
 const Playlist = require('../model/Playlist')
 const PlaylistAndIssue = require('../model/PlaylistAndIssue')
+const Challenge = require('../model/Challenge')
 
 const connection = new Sequelize(dbConfig)
 
@@ -21,6 +22,7 @@ Issue.init(connection)
 UserStatus.init(connection)
 Playlist.init(connection)
 PlaylistAndIssue.init(connection)
+Challenge.init(connection)
 
 // "ASSOCIATIONS"
 User.associate(connection.models)
@@ -29,6 +31,7 @@ Playlist.associate(connection.models)
 UserStatus.associate(connection.models)
 Questions.associate(connection.models)
 PlaylistAndIssue.associate(connection.models)
+Challenge.associate(connection.models)
 
 
 module.exports = connection
