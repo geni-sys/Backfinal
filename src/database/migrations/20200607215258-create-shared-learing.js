@@ -11,13 +11,18 @@ module.exports = {
         allowNull: false,
       },
       learning: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'issue',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
       },
       user_one: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        refereces: {
+        references: {
           model: 'users',
           key: 'id'
         },
@@ -26,7 +31,7 @@ module.exports = {
       user_two: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        refereces: {
+        references: {
           model: 'users',
           key: 'id'
         },
@@ -52,7 +57,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-
     return queryInterface.dropTable('shared_learning');
   }
 };

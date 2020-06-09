@@ -13,7 +13,7 @@ module.exports = {
       list: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        refereces: {
+        references: {
           model: 'playlist',
           key: 'id'
         },
@@ -23,7 +23,7 @@ module.exports = {
       issue: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        refereces: {
+        references: {
           model: 'issue',
           key: 'id'
         },
