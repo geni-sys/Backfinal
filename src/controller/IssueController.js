@@ -74,13 +74,24 @@ module.exports = {
     try {
 
       const admin = await User.findByPk(admin_id)
+      if (!admin) {
+        return response.status(400).json({
+          message: '[100] You need > Create an account'
+        })
+      }
       if (!admin.canny) {
         return response.status(400).json({
           message: 'Only admin can delete an issue. Do a requisition for an admin'
         })
       }
+      let issue = Issue.findByPk(issue_id)
+      if (!issue) {
+        return response.status(400).json({
+          message: 'Issue does not exists!'
+        })
+      }
 
-      const issue = await Issue.destroy({
+      issue = await Issue.destroy({
         where: {
           id: issue_id
         }
@@ -89,10 +100,12 @@ module.exports = {
         console.log('issue deletada: ' + issue)
       }
 
+      return response.json()
+
     } catch (err) {
       console.log(err)
     }
 
-    return response.status(200).json()
+    return response.status(400).json()
   }
 }

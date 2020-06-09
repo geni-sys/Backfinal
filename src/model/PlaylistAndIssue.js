@@ -15,13 +15,13 @@ class PlaylistAndIssue extends Model {
   }
 
   static associate(models) {
-    // "WITH ISSUE N-N"
+    // "WITH ISSUE 1-N"
     this.belongsTo(models.Issue, {
       foreignKey: 'issue',
       as: 'issues'
     })
 
-    // WITH PLAYLIST N-N
+    // WITH PLAYLIST 1-N
     this.belongsTo(models.Playlist, {
       foreignKey: 'list',
       as: 'lists'

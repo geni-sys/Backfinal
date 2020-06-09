@@ -10,6 +10,7 @@ class Challenge extends Model {
       tips: DataTypes.STRING,
     }, {
       sequelize,
+      tableName: 'challenges'
     });
   }
 

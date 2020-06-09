@@ -3,12 +3,27 @@ const Playlist = require('../model/Playlist')
 const PlaylistAndIssue = require('../model/PlaylistAndIssue')
 const Issue = require('../model/Issue')
 
+const {
+  verifyAuthencite
+} = require('./utils/functions')
+
 module.exports = {
   // "LISTAR PLAYLIST"
-  async index(req, res) {
-    const playlist = await Playlist.findAll()
+  async index(request, response) {
+    let lists = null
+    try {
+      lists = await Playlist.findAll({
+        include: [{
+          association: 'issues'
+        }]
+      });
+    } catch (err) {
+      console.log(err.message)
 
-    return res.json(playlist)
+      return response.status(400).json()
+    }
+
+    return response.json(lists)
   },
 
   // "CREATE PLAYLIST"
@@ -68,11 +83,13 @@ module.exports = {
       user_id
     } = req.params
 
+    // verifyAuthencite(user_id, res, req)
+
     const user = await User.findByPk(user_id, {
       include: ['lists']
     })
 
     return res.json(user)
-  }
+  },
 
 }
