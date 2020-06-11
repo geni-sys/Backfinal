@@ -5,6 +5,7 @@ const {
   generateToken
 } = require('../utils/functions')
 
+
 module.exports = {
   // "LOGAR USUÁRIO"
   async login(req, res) {
@@ -17,7 +18,7 @@ module.exports = {
     try {
       user = await User.findOne({
         where: {
-          email
+          email,
         },
       })
 
@@ -36,7 +37,7 @@ module.exports = {
       user.password = undefined
 
     } catch (err) {
-      console.log(err)
+      console.log(err.message)
       return res.status(404).send({
         error: "Bad request"
       })
@@ -94,8 +95,8 @@ module.exports = {
 
       user.password = undefined
     } catch (err) {
-      console.warn(err)
-      return res.tatus(400).send({
+      console.warn(err.message)
+      return res.status(400).send({
         error: "Registration failed"
       })
     }

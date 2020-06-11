@@ -19,7 +19,7 @@ module.exports = {
       console.log(err)
     }
 
-    return response.json(user)
+    return response.json(user.issues)
   },
 
   async store(request, response) {
