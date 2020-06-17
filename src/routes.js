@@ -25,6 +25,8 @@ routes.get('/users/:user_logado/questions', authMidleware, QuestionsController.i
 
 // "ISSUE"
 routes.get('/user/:owner_id/issues', authMidleware, issueController.index)
+routes.get('/issues', authMidleware, issueController.all)
+routes.get('/issues/:issue_id', authMidleware, issueController.unic)
 routes.post('/user/:owner_id/new/issue', authMidleware, issueController.store)
 routes.delete('/admin/:admin_id/destroy/issue/:issue_id', authMidleware, issueController.destroy)
 

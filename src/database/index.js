@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize')
+const Sequelize = require('sequelize') // impede o sql injection por padrão
 const dbConfig = require('../config/database')
 const hooks = require('./hooks.js')
 

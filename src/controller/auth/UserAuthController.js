@@ -16,6 +16,9 @@ module.exports = {
 
     let user = null
     try {
+      // USANDO O NODEJS
+      // select *  from  users where email = "email";
+
       user = await User.findOne({
         where: {
           email,

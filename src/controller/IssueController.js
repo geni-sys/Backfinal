@@ -22,6 +22,38 @@ module.exports = {
     return response.json(user.issues)
   },
 
+  async all(request, response) {
+    const issue = await Issue.findAll({
+      attributes: ['id', 'title', 'body', 'tags', 'language', 'link'],
+      include: [{
+        association: 'user',
+        attributes: ['id', 'name']
+      }],
+      limit: 10
+    })
+
+    return response.json(issue)
+  },
+
+  async unic(request, response) {
+    const {
+      issue_id
+    } = request.params
+
+    try {
+      const issue = await Issue.findByPk(issue_id, {
+        attributes: ['id', 'title', 'body', 'tags', 'link']
+      })
+
+      return response.json(issue)
+    } catch (err) {
+      console.log(err.message)
+      return response.status(400).send({
+        message: 'Error in connection'
+      })
+    }
+  },
+
   async store(request, response) {
     const {
       owner_id
