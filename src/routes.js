@@ -36,6 +36,7 @@ routes.get('/user/:user_id/status', authMidleware, UserStatusController.index)
 
 // "HANDLE PLAYLIST"
 routes.get('/playlists', PlaylistController.index)
+routes.get('/playlist/:list_id', PlaylistController.unc)
 routes.get('/users/:user_id/lists', PlaylistController.unic)
 routes.post('/users/:user_id/create/playlist', authMidleware, PlaylistController.store)
 routes.post('/create/list', authMidleware, PlaylistController.create)

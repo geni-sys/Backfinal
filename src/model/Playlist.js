@@ -26,6 +26,12 @@ class Playlist extends Model {
       foreignKey: 'owner',
       as: 'user'
     })
+
+    // WITH PLAYLISTandISSUE 1-N
+    this.belongsTo(models.PlaylistAndIssue, {
+      foreignKey: 'id',
+      as: 'list_issue',
+    })
   }
 }
 

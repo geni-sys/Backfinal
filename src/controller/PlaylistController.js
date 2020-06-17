@@ -92,4 +92,39 @@ module.exports = {
     return res.json(user)
   },
 
+  // "PEGA UMA ÚNICA LIST"
+  async unc(request, response) {
+    const {
+      list_id
+    } = request.params
+    try {
+      const list = await PlaylistAndIssue.findAll({
+        attributes: ['id'],
+        include: [{
+          association: 'issues',
+          attributes: ['id', 'title', 'body', 'link', 'tags']
+        }, {
+          association: 'lists',
+          attributes: ['id', 'name'],
+          where: {
+            'id': list_id
+          }
+        }],
+      })
+
+      if (!list) {
+        return response.status(500).json({
+          error: 'list do not exists'
+        })
+      }
+
+      return response.json(list)
+    } catch (err) {
+      console.log(err.message)
+      return response.status(400).json({
+        message: 'Error in connection!'
+      })
+    }
+  }
+
 }
