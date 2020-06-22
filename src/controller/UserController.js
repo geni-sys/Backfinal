@@ -1,15 +1,35 @@
 const User = require('../model/User')
+const {
+  Op
+} = require("sequelize");
 
 module.exports = {
   // "LISTAR USUÁRIOS"
   async index(req, res) {
+    const {
+      query
+    } = req.query
+
     let users = null
     try {
-      users = await User.findAll({
-        attributes: {
-          exclude: ['password']
-        }
-      })
+      if (!query) {
+        users = await User.findAll({
+          attributes: {
+            exclude: ['password']
+          }
+        })
+      } else {
+        users = await User.findAll({
+          attributes: {
+            exclude: ['password', 'canny', 'createdAt', 'updatedAt']
+          },
+          where: {
+            name: {
+              [Op.like]: `%${query}%`
+            }
+          }
+        })
+      }
     } catch (err) {
       console.warn(err)
       return res.status(404).send({

@@ -1,3 +1,7 @@
+const {
+  Op
+} = require("sequelize");
+
 const Issue = require('../model/Issue')
 const User = require('../model/User')
 
@@ -23,14 +27,42 @@ module.exports = {
   },
 
   async all(request, response) {
-    const issue = await Issue.findAll({
-      attributes: ['id', 'title', 'body', 'tags', 'language', 'link'],
-      include: [{
-        association: 'user',
-        attributes: ['id', 'name']
-      }],
-      limit: 10
-    })
+    const {
+      query
+    } = request.query
+
+    let issue = null
+    try {
+      if (!query) {
+        issue = await Issue.findAll({
+          attributes: ['id', 'title', 'body', 'tags', 'language', 'link'],
+          include: [{
+            association: 'user',
+            attributes: ['id', 'name']
+          }],
+          limit: 10
+        })
+      } else {
+        issue = await Issue.findAll({
+          attributes: ['id', 'title', 'tags', 'link'],
+          where: {
+            title: {
+              [Op.like]: `%${query}%`
+            }
+          },
+          include: [{
+            association: 'user',
+            attributes: ['id', 'name']
+          }],
+          limit: 10
+        })
+      }
+    } catch (err) {
+      console.log(err.message)
+      return response.status(400).json({
+        message: 'Error in connection'
+      })
+    }
 
     return response.json(issue)
   },

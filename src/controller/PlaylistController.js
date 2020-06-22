@@ -1,3 +1,7 @@
+const {
+  Op
+} = require('sequelize')
+
 const User = require('../model/User')
 const Playlist = require('../model/Playlist')
 const PlaylistAndIssue = require('../model/PlaylistAndIssue')
@@ -10,16 +14,35 @@ const {
 module.exports = {
   // "LISTAR PLAYLIST"
   async index(request, response) {
+    const {
+      query
+    } = request.query
+
     let lists = null
     try {
-      lists = await Playlist.findAll({
-        include: [{
-          association: 'issues'
-        }]
-      });
+      if (!query) {
+        lists = await Playlist.findAll({
+          include: [{
+            association: 'issues'
+          }],
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'owner']
+          },
+        });
+      } else {
+        lists = await Playlist.findAll({
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'owner']
+          },
+          where: {
+            name: {
+              [Op.like]: `%${query}%`,
+            }
+          }
+        });
+      }
     } catch (err) {
       console.log(err.message)
-
       return response.status(400).json()
     }
 
