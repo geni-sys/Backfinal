@@ -11,6 +11,7 @@ const ChallengeController = require('./controller/ChallengeController')
 
 // "AUTH USER"
 routes.post('/:adm/register', userAuthController.store)
+routes.post('/:isAdm/authenticate', userAuthController.login)
 routes.post('/register', userAuthController.store)
 routes.post('/authenticate', userAuthController.login)
 
@@ -29,6 +30,7 @@ routes.get('/issues', authMidleware, issueController.all)
 routes.get('/issues/:issue_id', authMidleware, issueController.unic)
 routes.post('/user/:owner_id/new/issue', authMidleware, issueController.store)
 routes.delete('/admin/:admin_id/destroy/issue/:issue_id', authMidleware, issueController.destroy)
+routes.put('/admin/:admin_id/edit/issue/:issue_id', authMidleware, issueController.edit)
 
 // "USER HANDLE STATUS"
 routes.post('/user/:user_id/status', authMidleware, UserStatusController.store)

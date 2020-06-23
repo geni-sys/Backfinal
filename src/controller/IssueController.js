@@ -171,5 +171,59 @@ module.exports = {
     }
 
     return response.status(400).json()
-  }
+  },
+
+  async edit(request, response) {
+    const {
+      admin_id,
+      issue_id
+    } = request.params
+    const {
+      title,
+      link,
+      tags,
+      body
+    } = request.body
+
+    try {
+      const admin = await User.findByPk(admin_id)
+      if (!admin) {
+        return response.status(400).json({
+          message: '[100] You need > Create an account'
+        })
+      }
+      if (!admin.canny) {
+        return response.status(400).json({
+          message: 'Only admin can delete an issue. Do a requisition for an admin'
+        })
+      }
+      let issue = Issue.findByPk(issue_id)
+      if (!issue) {
+        return response.status(400).json({
+          message: 'Issue does not exists!'
+        })
+      }
+
+      issue = await Issue.update({
+        title,
+        link,
+        tags,
+        body
+      }, {
+        where: {
+          id: issue_id
+        }
+      })
+      if (issue) {
+        console.log('issue Editada: ' + issue)
+      }
+
+      return response.json(issue)
+
+    } catch (err) {
+      console.log(err)
+    }
+
+    return response.status(400).json()
+  },
 }

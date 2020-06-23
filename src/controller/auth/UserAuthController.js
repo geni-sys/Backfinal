@@ -13,6 +13,9 @@ module.exports = {
       email,
       password
     } = req.body
+    const {
+      isAdm
+    } = req.params
 
     let user = null
     try {
@@ -35,6 +38,11 @@ module.exports = {
         return res.status(400).send({
           error: "Invalid password"
         })
+      }
+
+      if (isAdm === 'ok' && user.canny) {
+        console.log(`ADM: ${user.name} logando`)
+        console.log(`Data: ${String(new Date().getDate())}`)
       }
 
       user.password = undefined
