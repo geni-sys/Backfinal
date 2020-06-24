@@ -19,6 +19,7 @@ routes.post('/authenticate', userAuthController.login)
 // routes.use(authMidleware)
 routes.get('/users', authMidleware, userController.index)
 routes.delete('/users/:user_logado/delete', authMidleware, userController.destroy)
+routes.delete('/admin/:admin/delete/user/:user_id', authMidleware, userController.delete)
 
 // "HANDLE QUESTIONS"
 routes.post('/users/:user_logado/questions', authMidleware, QuestionsController.store)

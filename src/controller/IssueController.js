@@ -52,7 +52,7 @@ module.exports = {
           },
           include: [{
             association: 'user',
-            attributes: ['id', 'name']
+            attributes: ['id', 'name', 'email']
           }],
           limit: 10
         })
@@ -74,7 +74,11 @@ module.exports = {
 
     try {
       const issue = await Issue.findByPk(issue_id, {
-        attributes: ['id', 'title', 'body', 'tags', 'link']
+        attributes: ['id', 'title', 'body', 'tags', 'link'],
+        include: [{
+          association: 'user',
+          attributes: ['id', 'name', 'email']
+        }],
       })
 
       return response.json(issue)
@@ -184,6 +188,8 @@ module.exports = {
       tags,
       body
     } = request.body
+
+    console.log(body)
 
     try {
       const admin = await User.findByPk(admin_id)

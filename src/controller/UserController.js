@@ -88,4 +88,54 @@ module.exports = {
       error: "Account not regitered"
     })
   },
+
+  // "ADMIN DELETE ACCOUNT OF USER"
+  async delete(req, res) {
+    const {
+      admin,
+      user_id
+    } = req.params
+
+    let user = null
+    let adm = null
+    // caso esta identificado corretamente
+    try {
+      user = await User.findOne({
+        where: {
+          id: user_id
+        }
+      })
+      if (!user) {
+        return res.status(400).json({
+          error: "Account not found"
+        })
+      }
+
+      adm = await User.findByPk(admin)
+      if (!adm) {
+        return res.status(400).json({
+          error: "[ADMIN] :: Account not found"
+        })
+      }
+      if (adm.canny) {
+        user = await User.destroy({
+          where: {
+            id: user_id,
+          }
+        })
+
+        return res.status(200).send("sucess")
+      } else {
+        return res.status(404).json({
+          message: 'You are not ADMIN!'
+        })
+      }
+    } catch (err) {
+      console.log(err)
+    }
+
+    return res.status(404).send({
+      error: "Account not regitered"
+    })
+  }
 }
