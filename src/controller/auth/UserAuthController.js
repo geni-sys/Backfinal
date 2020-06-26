@@ -1,23 +1,22 @@
-const User = require('../../model/User')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const User = require('../../model/User');
 
 const {
-  generateToken
-} = require('../utils/functions')
-
+  generateToken,
+} = require('../utils/functions');
 
 module.exports = {
   // "LOGAR USUÁRIO"
   async login(req, res) {
     const {
       email,
-      password
-    } = req.body
+      password,
+    } = req.body;
     const {
-      isAdm
-    } = req.params
+      isAdm,
+    } = req.params;
 
-    let user = null
+    let user = null;
     try {
       // USANDO O NODEJS
       // select *  from  users where email = "email";
@@ -26,65 +25,64 @@ module.exports = {
         where: {
           email,
         },
-      })
+      });
 
       if (!user) {
         return res.status(400).send({
-          error: "User not found"
-        })
+          error: 'User not found',
+        });
       }
 
       if (!(await bcrypt.compare(password, user.password))) {
         return res.status(400).send({
-          error: "Invalid password"
-        })
+          error: 'Invalid password',
+        });
       }
 
       if (isAdm === 'ok' && user.canny) {
-        console.log(`ADM: ${user.name} logando`)
-        console.log(`Data: ${String(new Date().getDate())}`)
+        console.log(`ADM: ${user.name} logando`);
+        console.log(`Data: ${String(new Date().getDate())}`);
       }
 
-      user.password = undefined
-
+      user.password = undefined;
     } catch (err) {
-      console.log(err.message)
+      console.log(err.message);
       return res.status(404).send({
-        error: "Bad request"
-      })
+        error: 'Bad request',
+      });
     }
 
     return res.json({
       user,
       token: generateToken({
-        id: user.id
-      })
-    })
+        id: user.id,
+      }),
+    });
   },
 
   // "CRIAR USUÁRIO" || "/:adm/register"
   async store(req, res) {
     const {
-      adm
-    } = req.params
+      adm,
+    } = req.params;
     const {
       name,
       email,
       password,
-      canny
-    } = req.body
+      canny,
+    } = req.body;
 
     let user = null;
 
     try {
       if (await User.findOne({
           where: {
-            email
-          }
+            email,
+          },
         })) {
         return res.status(404).send({
-          error: "User already exists"
-        })
+          error: 'User already exists',
+        });
       }
 
       // Se é adm
@@ -93,31 +91,30 @@ module.exports = {
           name,
           email,
           password,
-          canny
-        })
+          canny,
+        });
       } else {
         user = await User.create({
           name,
           email,
           password,
-          canny
-        })
+          canny,
+        });
       }
 
-      user.password = undefined
+      user.password = undefined;
     } catch (err) {
-      console.warn(err.message)
+      console.warn(err.message);
       return res.status(400).send({
-        error: "Registration failed"
-      })
+        error: 'Registration failed',
+      });
     }
 
     return res.json({
       user,
       token: generateToken({
-        id: user.id
-      })
-    })
+        id: user.id,
+      }),
+    });
   },
-
-}
+};
