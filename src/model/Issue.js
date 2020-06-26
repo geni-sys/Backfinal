@@ -1,7 +1,7 @@
 const {
   Model,
-  DataTypes
-} = require('sequelize')
+  DataTypes,
+} = require('sequelize');
 
 class Issue extends Model {
   static init(sequelize) {
@@ -13,23 +13,23 @@ class Issue extends Model {
       link: DataTypes.STRING,
     }, {
       sequelize,
-      tableName: 'issue'
-    })
+      tableName: 'issue',
+    });
   }
 
   // "USER RELATION 1-N"
   static associate(models) {
     this.belongsTo(models.User, {
       foreignKey: 'owner',
-      as: 'user'
-    })
+      as: 'user',
+    });
 
     // "PLAYLIST RELATION N-N"
     this.belongsToMany(models.Playlist, {
       foreignKey: 'issue',
       through: 'playlist_and_issue',
-      as: 'lists'
-    })
+      as: 'lists',
+    });
   }
 }
 
@@ -38,5 +38,4 @@ class Issue extends Model {
  * ::foreighKey: a chave dentro da tabela relacionando [ N - N ]
  */
 
-
-module.exports = Issue
+module.exports = Issue;

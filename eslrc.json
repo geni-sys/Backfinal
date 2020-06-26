@@ -1,5 +1,4 @@
 {
-  /*eslint linebreak-style: ["error", "windows"]*/
   "parser": "babel-eslint",
   "env": {
     "browser": true,
