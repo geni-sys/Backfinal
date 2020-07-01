@@ -50,7 +50,8 @@ routes.get('/challenges', ChallengeController.index);
 routes.post('/users/:user_id/issues/:issue_id/new/challenges', ChallengeController.store);
 
 // "HANDLE REPORTS"
-routes.post('/reports/:adminID/delete/:issueID', authMidleware, ReportController.index);
+routes.get('/reports/:adminID', authMidleware, ReportController.index);
+routes.post('/reports/:adminID/delete/:issueID', authMidleware, ReportController.indexy);
 routes.post('/reports/:adminID/edit/:issueID', authMidleware, ReportController.editI);
 routes.post('/reports/:adminID/delete/:userID', authMidleware, ReportController.store);
 

@@ -7,7 +7,7 @@ class Issue extends Model {
   static init(sequelize) {
     super.init({
       title: DataTypes.STRING,
-      body: DataTypes.STRING,
+      body: DataTypes.TEXT,
       tags: DataTypes.STRING,
       language: DataTypes.STRING,
       link: DataTypes.STRING,

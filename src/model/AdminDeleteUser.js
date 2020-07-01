@@ -1,17 +1,15 @@
 const {
   Model,
   DataTypes,
-  // eslint-disable-next-line quotes
-} = require("sequelize");
+} = require('sequelize');
 
-class Challenge extends Model {
+class AdminDeleteUser extends Model {
   static init(sequelize) {
     super.init({
-      body: DataTypes.STRING,
-      tips: DataTypes.STRING,
+      admin_id: DataTypes.INTEGER,
     }, {
       sequelize,
-      tableName: 'challenges',
+      tableName: 'admin_delete_user',
     });
   }
 
@@ -30,4 +28,4 @@ class Challenge extends Model {
   }
 }
 
-module.exports = Challenge;
+module.exports = AdminDeleteUser;
