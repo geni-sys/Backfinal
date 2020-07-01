@@ -43,7 +43,9 @@ routes.get('/playlists', PlaylistController.index);
 routes.get('/playlist/:list_id', PlaylistController.unc);
 routes.get('/users/:user_id/lists', PlaylistController.unic);
 routes.post('/users/:user_id/create/playlist', authMidleware, PlaylistController.store);
-routes.post('/create/list', authMidleware, PlaylistController.create);
+routes.post('/create/list/:id', authMidleware, PlaylistController.create);
+routes.put('/playlists/:id/stars', PlaylistController.stars);
+routes.put('/playlists/:id/users_learning', PlaylistController.learning);
 
 // "HANDLE CHALLENGES"
 routes.get('/challenges', ChallengeController.index);

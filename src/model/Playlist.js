@@ -1,15 +1,17 @@
 const {
   Model,
-  DataTypes
-} = require("sequelize");
+  DataTypes,
+} = require('sequelize');
 
 class Playlist extends Model {
   static init(sequelize) {
     super.init({
       name: DataTypes.STRING,
+      stars: DataTypes.INTEGER,
+      users_learning: DataTypes.INTEGER,
     }, {
       sequelize,
-      tableName: 'Playlist'
+      tableName: 'Playlist',
     });
   }
 
@@ -18,20 +20,20 @@ class Playlist extends Model {
     this.belongsToMany(models.Issue, {
       foreignKey: 'list',
       through: 'playlist_and_issue',
-      as: 'issues'
-    })
+      as: 'issues',
+    });
 
     // WITH USER 1-N
     this.belongsTo(models.User, {
       foreignKey: 'owner',
-      as: 'user'
-    })
+      as: 'user',
+    });
 
     // WITH PLAYLISTandISSUE 1-N
     this.belongsTo(models.PlaylistAndIssue, {
       foreignKey: 'id',
       as: 'list_issue',
-    })
+    });
   }
 }
 
@@ -39,6 +41,5 @@ class Playlist extends Model {
  * belongsTo:
  * ::foreignKey: a coluna dentro de Playlist que representa o suário
  */
-
 
 module.exports = Playlist;

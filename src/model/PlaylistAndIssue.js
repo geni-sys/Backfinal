@@ -1,7 +1,7 @@
 const {
   Model,
-  DataTypes
-} = require("sequelize");
+  DataTypes,
+} = require('sequelize');
 
 class PlaylistAndIssue extends Model {
   static init(sequelize) {
@@ -10,7 +10,7 @@ class PlaylistAndIssue extends Model {
       issue: DataTypes.INTEGER,
     }, {
       sequelize,
-      tableName: 'playlist_and_issue'
+      tableName: 'playlist_and_issue',
     });
   }
 
@@ -18,16 +18,15 @@ class PlaylistAndIssue extends Model {
     // "WITH ISSUE 1-N"
     this.belongsTo(models.Issue, {
       foreignKey: 'issue',
-      as: 'issues'
-    })
+      as: 'issues',
+    });
 
     // WITH PLAYLIST 1-N
     this.belongsTo(models.Playlist, {
       foreignKey: 'list',
-      as: 'lists'
-    })
+      as: 'lists',
+    });
   }
 }
-
 
 module.exports = PlaylistAndIssue;
