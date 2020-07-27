@@ -61,5 +61,7 @@ routes.post('/reports/:adminID/delete/:userID', authMidleware, ReportController.
 // MARKEDS
 routes.post('/user/:user_id/mark/lists/:list_id', MarkedController.store);
 routes.get('/user/:user_id/marked/lists', MarkedController.index);
+routes.post('/user/:owner/mark/users/:marked_id', MarkedController.create);
+routes.get('/user/:owner/marked/users', MarkedController.initial);
 
 module.exports = routes;
