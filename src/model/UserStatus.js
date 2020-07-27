@@ -1,7 +1,7 @@
 const {
   Model,
-  DataTypes
-} = require('sequelize')
+  DataTypes,
+} = require('sequelize');
 
 class UserStatus extends Model {
   static init(sequelize) {
@@ -15,17 +15,16 @@ class UserStatus extends Model {
       approximate: DataTypes.STRING,
     }, {
       sequelize,
-      tableName: 'status_user'
-    })
+      tableName: 'status_user',
+    });
   }
 
   static associate(models) {
     this.belongsTo(models.User, {
       foreignKey: 'id',
-      as: 'status'
-    })
+      as: 'status',
+    });
   }
 }
 
-
-module.exports = UserStatus
+module.exports = UserStatus;

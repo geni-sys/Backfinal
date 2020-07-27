@@ -10,6 +10,7 @@ const Playlist = require('../model/Playlist');
 const PlaylistAndIssue = require('../model/PlaylistAndIssue');
 const Challenge = require('../model/Challenge');
 const AdminChangeIssue = require('../model/AdminChangeIssue');
+const ListMarked = require('../model/ListMarked');
 
 const connection = new Sequelize(dbConfig);
 
@@ -25,6 +26,7 @@ Playlist.init(connection);
 PlaylistAndIssue.init(connection);
 Challenge.init(connection);
 AdminChangeIssue.init(connection);
+ListMarked.init(connection);
 
 // "ASSOCIATIONS"
 User.associate(connection.models);
@@ -35,5 +37,6 @@ Questions.associate(connection.models);
 PlaylistAndIssue.associate(connection.models);
 Challenge.associate(connection.models);
 AdminChangeIssue.associate(connection.models);
+ListMarked.associate(connection.models);
 
 module.exports = connection;

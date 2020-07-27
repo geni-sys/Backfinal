@@ -9,6 +9,7 @@ const issueController = require('./controller/IssueController');
 const UserStatusController = require('./controller/UserStatusController');
 const PlaylistController = require('./controller/PlaylistController');
 const ChallengeController = require('./controller/ChallengeController');
+const MarkedController = require('./controller/MarkedController');
 
 // "AUTH USER"
 routes.post('/:adm/register', userAuthController.store);
@@ -56,5 +57,9 @@ routes.get('/reports/:adminID', authMidleware, ReportController.index);
 routes.post('/reports/:adminID/delete/:issueID', authMidleware, ReportController.indexy);
 routes.post('/reports/:adminID/edit/:issueID', authMidleware, ReportController.editI);
 routes.post('/reports/:adminID/delete/:userID', authMidleware, ReportController.store);
+
+// MARKEDS
+routes.post('/user/:user_id/mark/lists/:list_id', MarkedController.store);
+routes.get('/user/:user_id/marked/lists', MarkedController.index);
 
 module.exports = routes;
