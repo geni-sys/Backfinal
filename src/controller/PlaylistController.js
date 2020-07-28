@@ -268,4 +268,26 @@ module.exports = {
     }
   },
 
+  async delete(req, res) {
+    const {
+      list_id,
+    } = req.params;
+
+    try {
+      const response = await Playlist.destroy({
+        where: {
+          id: list_id,
+        },
+      });
+
+      return res.json(response);
+    } catch (err) {
+      console.log(err.message);
+
+      return res.status(400).json({
+        message: 'Do not could delete',
+      });
+    }
+  },
+
 };

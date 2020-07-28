@@ -17,6 +17,9 @@ routes.post('/:isAdm/authenticate', userAuthController.login);
 routes.post('/register', userAuthController.store);
 routes.post('/authenticate', userAuthController.login);
 
+// HANDLE ADMS FUNCTIONAL
+routes.put('/admin/:owner/demote/:admin_id', authMidleware, userController.demote);
+
 // "USER"
 // routes.use(authMidleware)
 routes.get('/users', authMidleware, userController.index);
@@ -47,6 +50,7 @@ routes.post('/users/:user_id/create/playlist', authMidleware, PlaylistController
 routes.post('/create/list/:id', authMidleware, PlaylistController.create);
 routes.put('/playlists/:id/stars', PlaylistController.stars);
 routes.put('/playlists/:id/users_learning', PlaylistController.learning);
+routes.delete('/playlists/:list_id', PlaylistController.delete);
 
 // "HANDLE CHALLENGES"
 routes.get('/challenges', ChallengeController.index);
