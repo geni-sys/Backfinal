@@ -10,6 +10,9 @@ const UserStatusController = require('./controller/UserStatusController');
 const PlaylistController = require('./controller/PlaylistController');
 const ChallengeController = require('./controller/ChallengeController');
 const MarkedController = require('./controller/MarkedController');
+const FeedbackController = require('./controller/FeedbackController');
+// EXTRAX
+const ExtraIssuesController = require('./controller/ExtraIssuesController');
 
 // "AUTH USER"
 routes.post('/:adm/register', userAuthController.store);
@@ -63,9 +66,18 @@ routes.post('/reports/:adminID/edit/:issueID', authMidleware, ReportController.e
 routes.post('/reports/:adminID/delete/:userID', authMidleware, ReportController.store);
 
 // MARKEDS
-routes.post('/user/:user_id/mark/lists/:list_id', MarkedController.store);
-routes.get('/user/:user_id/marked/lists', MarkedController.index);
-routes.post('/user/:owner/mark/users/:marked_id', MarkedController.create);
-routes.get('/user/:owner/marked/users', MarkedController.initial);
+routes.post('/user/:user_id/mark/lists/:list_id', authMidleware, MarkedController.store);
+routes.get('/user/:user_id/marked/lists', authMidleware, MarkedController.index);
+routes.post('/user/:owner/mark/users/:marked_id', authMidleware, MarkedController.create);
+routes.get('/user/:owner/marked/users', authMidleware, MarkedController.initial);
+
+// HANDLE FEEDBACK
+routes.post('/feedbacks/:user_id', authMidleware, FeedbackController.store);
+routes.get('/feedbacks', authMidleware, FeedbackController.index);
+routes.get('/feedbacks/:feed', authMidleware, FeedbackController.unic);
+
+// HANDLE EXTRAS methods
+// USERS
+routes.get('/counts/issues', authMidleware, ExtraIssuesController.index);
 
 module.exports = routes;
