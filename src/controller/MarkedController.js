@@ -1,20 +1,20 @@
 /* eslint-disable camelcase */
 const
   Sequelize = require('../database');
-const ListMarked = require('../model/ListMarked');
+const IssuesMarked = require('../model/IssuesMarked');
 const UserMarked = require('../model/UserMarked');
 
 module.exports = {
-  // GET LIST OF LISTs MARKED
+  // GET LIST OF ISSUEs MARKED
   async index(request, response) {
     const {
       user_id,
     } = request.params;
 
     try {
-      const marked = await ListMarked.findAll({
+      const marked = await IssuesMarked.findAll({
         include: [{
-          association: 'list',
+          association: 'issue',
         }],
         attributes: {
           exclude: ['createdAt', 'updatedAt', 'list_id'],
@@ -34,17 +34,17 @@ module.exports = {
     });
   },
 
-  // ADD LIST IN MARKED LISTS
+  // ADD ISSUE IN MARKED LISTS
   async store(request, response) {
     const {
       user_id,
-      list_id,
+      issue_id,
     } = request.params;
 
     try {
-      const mark = await ListMarked.create({
+      const mark = await IssuesMarked.create({
         user_id,
-        list_id,
+        issue_id,
       });
 
       return response.json(mark);
@@ -103,6 +103,36 @@ module.exports = {
 
     return response.status(400).json({
       message: 'Cannot mark this user',
+    });
+  },
+
+  // -------------------------------
+  async unicIssue(request, response) {
+    const {
+      user_id,
+    } = request.params;
+    const {
+      element,
+    } = request.query;
+
+    try {
+      const marked = await IssuesMarked.findAll({
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+        where: {
+          issue_id: element,
+          user_id,
+        },
+      });
+
+      return response.json(marked);
+    } catch (err) {
+      console.log(err.message);
+    }
+
+    return response.status(400).json({
+      message: 'Cannot mark this list',
     });
   },
 };

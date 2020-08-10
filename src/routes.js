@@ -66,8 +66,9 @@ routes.post('/reports/:adminID/edit/:issueID', authMidleware, ReportController.e
 routes.post('/reports/:adminID/delete/:userID', authMidleware, ReportController.store);
 
 // MARKEDS
-routes.post('/user/:user_id/mark/lists/:list_id', authMidleware, MarkedController.store);
-routes.get('/user/:user_id/marked/lists', authMidleware, MarkedController.index);
+routes.post('/user/:user_id/mark/issues/:issue_id', authMidleware, MarkedController.store);
+routes.get('/user/:user_id/marked/issues', authMidleware, MarkedController.index);
+routes.get('/user/:user_id/issue/marked', authMidleware, MarkedController.unicIssue);
 routes.post('/user/:owner/mark/users/:marked_id', authMidleware, MarkedController.create);
 routes.get('/user/:owner/marked/users', authMidleware, MarkedController.initial);
 

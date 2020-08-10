@@ -1,15 +1,15 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('list_marked', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('issues_marked', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
       allowNull: false,
     },
-    list_id: {
+    issue_id: {
       type: Sequelize.INTEGER,
       references: {
-        model: 'playlist',
+        model: 'issue',
         key: 'id',
       },
       allowNull: false,
@@ -33,5 +33,5 @@ module.exports = {
     },
   }),
 
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('list_marked'),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('issues_marked'),
 };

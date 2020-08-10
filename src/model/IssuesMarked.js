@@ -6,19 +6,19 @@ const {
 class ListMarked extends Model {
   static init(sequelize) {
     super.init({
-      list_id: DataTypes.INTEGER,
+      issue_id: DataTypes.INTEGER,
       user_id: DataTypes.INTEGER,
     }, {
       sequelize,
-      tableName: 'list_marked',
+      tableName: 'issues_marked',
     });
   }
 
   static associate(models) {
     // "WITH ISSUE 1-N"
-    this.belongsTo(models.Playlist, {
-      foreignKey: 'list_id',
-      as: 'list',
+    this.belongsTo(models.Issue, {
+      foreignKey: 'issue_id',
+      as: 'issue',
     });
 
     // WITH PLAYLIST 1-N

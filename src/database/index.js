@@ -10,7 +10,7 @@ const Playlist = require('../model/Playlist');
 const PlaylistAndIssue = require('../model/PlaylistAndIssue');
 const Challenge = require('../model/Challenge');
 const AdminChangeIssue = require('../model/AdminChangeIssue');
-const ListMarked = require('../model/ListMarked');
+const IssuesMarked = require('../model/IssuesMarked');
 const UserMarked = require('../model/UserMarked');
 const Feedbacks = require('../model/Feedbacks');
 
@@ -28,7 +28,7 @@ Playlist.init(connection);
 PlaylistAndIssue.init(connection);
 Challenge.init(connection);
 AdminChangeIssue.init(connection);
-ListMarked.init(connection);
+IssuesMarked.init(connection);
 UserMarked.init(connection);
 Feedbacks.init(connection);
 
@@ -41,7 +41,7 @@ Questions.associate(connection.models);
 PlaylistAndIssue.associate(connection.models);
 Challenge.associate(connection.models);
 AdminChangeIssue.associate(connection.models);
-ListMarked.associate(connection.models);
+IssuesMarked.associate(connection.models);
 UserMarked.associate(connection.models);
 Feedbacks.associate(connection.models);
 
