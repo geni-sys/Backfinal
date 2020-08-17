@@ -23,6 +23,11 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    github: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      default: '',
+    },
     canny: {
       type: Sequelize.BOOLEAN,
       allowNull: false,

@@ -9,6 +9,7 @@ class User extends Model {
       name: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
+      github: DataTypes.STRING,
       canny: DataTypes.BOOLEAN,
     }, {
       sequelize,

@@ -1,8 +1,11 @@
+/* eslint-disable no-console */
 /* eslint-disable camelcase */
+const bcrypt = require('bcrypt');
 const {
   Op,
 } = require('sequelize');
 const User = require('../model/User');
+const hooks = require('../database/hooks.js');
 
 module.exports = {
   // "LISTAR USUÁRIOS"
@@ -165,5 +168,96 @@ module.exports = {
     }
 
     return res.status(400).json();
+  },
+
+  // "UPDATE NAME, BIO AND GITHUB"
+  async update(req, res) {
+    const {
+      name,
+      bio,
+      github,
+    } = req.body;
+    const {
+      user_id,
+    } = req.params;
+
+    try {
+      const updated = await User.update({
+        name,
+        github,
+      }, {
+        where: {
+          id: user_id,
+        },
+        returning: true,
+      });
+
+      console.log(bio);
+
+      return res.json({
+        oparation: !!updated[1],
+      });
+    } catch (err) {
+      console.log(err.message);
+      return res.status(401).json({
+        error: err.message,
+      });
+    }
+
+    // return res.status(400).json({
+    //   error: 'User Could not be updated'
+    // });
+  },
+
+  async password(req, res) {
+    const {
+      oldPassword,
+      newPassword,
+    } = req.body;
+    const {
+      user_id,
+    } = req.params;
+
+    try {
+      const user = await User.findByPk(user_id);
+      if (!user) {
+        return res.status(400).json({
+          error: 'User dont exists',
+        });
+      }
+
+      if (!(await bcrypt.compare(oldPassword, user.password))) {
+        return res.status(400).send({
+          error: 'Invalid password',
+        });
+      }
+
+      // console.log(word);
+      return hooks.useCriptoToHash(newPassword).then(async (created) => {
+        const updated = await User.update({
+          password: String(created),
+        }, {
+          where: {
+            id: user_id,
+          },
+          returning: true,
+        });
+
+        return res.json({
+          oparation: !!updated[1],
+        });
+      });
+
+      // console.log(newPassword);
+    } catch (err) {
+      console.log(err.message);
+      return res.status(401).json({
+        error: err.message,
+      });
+    }
+
+    // return res.status(400).json({
+    //   error: 'User Could not be updated'
+    // });
   },
 };
