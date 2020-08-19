@@ -7,6 +7,10 @@ const {
 const User = require('../model/User');
 const hooks = require('../database/hooks.js');
 
+const {
+  generateToken,
+} = require('./utils/functions');
+
 module.exports = {
   // "LISTAR USUÁRIOS"
   async index(req, res) {
@@ -259,5 +263,32 @@ module.exports = {
     // return res.status(400).json({
     //   error: 'User Could not be updated'
     // });
+  },
+
+  async token(req, res) {
+    const {
+      user_id,
+    } = req.params;
+
+    try {
+      const user = await User.findByPk(user_id);
+
+      if (!user) {
+        return res.status(400).json({
+          error: 'User not found',
+        });
+      }
+
+      return res.json({
+        token: generateToken({
+          id: user.id,
+        }),
+      });
+    } catch (err) {
+      console.log(err.message);
+      return res.status(400).json({
+        error: err.message,
+      });
+    }
   },
 };

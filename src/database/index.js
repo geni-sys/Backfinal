@@ -13,6 +13,7 @@ const AdminChangeIssue = require('../model/AdminChangeIssue');
 const IssuesMarked = require('../model/IssuesMarked');
 const UserMarked = require('../model/UserMarked');
 const Feedbacks = require('../model/Feedbacks');
+const Notifications = require('../model/Notifications');
 
 const connection = new Sequelize(dbConfig);
 
@@ -31,6 +32,7 @@ AdminChangeIssue.init(connection);
 IssuesMarked.init(connection);
 UserMarked.init(connection);
 Feedbacks.init(connection);
+Notifications.init(connection);
 
 // "ASSOCIATIONS"
 User.associate(connection.models);
@@ -44,5 +46,6 @@ AdminChangeIssue.associate(connection.models);
 IssuesMarked.associate(connection.models);
 UserMarked.associate(connection.models);
 Feedbacks.associate(connection.models);
+Notifications.associate(connection.models);
 
 module.exports = connection;

@@ -11,6 +11,7 @@ const PlaylistController = require('./controller/PlaylistController');
 const ChallengeController = require('./controller/ChallengeController');
 const MarkedController = require('./controller/MarkedController');
 const FeedbackController = require('./controller/FeedbackController');
+const UserNotificationsController = require('./controller/Notifications/UserNotificationsController');
 // EXTRAX
 const ExtraIssuesController = require('./controller/ExtraIssuesController');
 
@@ -19,6 +20,7 @@ routes.post('/:adm/register', userAuthController.store);
 routes.post('/:isAdm/authenticate', userAuthController.login);
 routes.post('/register', userAuthController.store);
 routes.post('/authenticate', userAuthController.login);
+routes.get('/newToken/:user_id', authMidleware, userController.token);
 
 // HANDLE ADMS FUNCTIONAL
 routes.put('/admin/:owner/demote/:admin_id', authMidleware, userController.demote);
@@ -82,5 +84,9 @@ routes.get('/feedbacks/:feed', authMidleware, FeedbackController.unic);
 // HANDLE EXTRAS methods
 // USERS
 routes.get('/counts/issues', authMidleware, ExtraIssuesController.index);
+
+// HANDLE NOTIFICATIONS
+routes.get('/notifications/:sender/to/:receiver', UserNotificationsController.index);
+routes.post('/notifications/:sender/to/:receiver', UserNotificationsController.store);
 
 module.exports = routes;
