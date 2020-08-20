@@ -86,7 +86,7 @@ routes.get('/feedbacks/:feed', authMidleware, FeedbackController.unic);
 routes.get('/counts/issues', authMidleware, ExtraIssuesController.index);
 
 // HANDLE NOTIFICATIONS
-routes.get('/notifications/:sender/to/:receiver', UserNotificationsController.index);
+routes.get('/notifications/:receiver', UserNotificationsController.index);
 routes.post('/notifications/:sender/to/:receiver', UserNotificationsController.store);
 
 module.exports = routes;

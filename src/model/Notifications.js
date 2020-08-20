@@ -16,11 +16,16 @@ class Notifications extends Model {
     });
   }
 
-  static associate() {
-    // this.belongsTo(models.User, {
-    //   foreignKey: 'user_id',
-    //   as: 'user',
-    // });
+  static associate(models) {
+    this.belongsTo(models.User, {
+      foreignKey: 'sender',
+      as: 'de',
+    });
+
+    this.belongsTo(models.User, {
+      foreignKey: 'receiver',
+      as: 'para',
+    });
   }
 }
 

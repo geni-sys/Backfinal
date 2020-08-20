@@ -7,15 +7,14 @@ module.exports = {
   // "LISTAR NOTIFICATIONS OF UNIC USER"
   async index(request, response) {
     const {
-      sender,
       receiver,
     } = request.params;
 
     try {
-      const rcv = await User.findByPk(receiver);
-      if (!rcv) {
+      const snd = await User.findByPk(receiver);
+      if (!snd) {
         return response.status(400).send({
-          error: 'Receiver dont exists',
+          error: 'User dont exists',
         });
       }
 
@@ -24,8 +23,15 @@ module.exports = {
           exclude: ['createdAt'],
         },
         where: {
-          sender,
+          receiver,
         },
+        include: [{
+          association: 'de',
+          attributes: ['id', 'name', 'email'],
+        }, {
+          association: 'para',
+          attributes: ['id', 'name', 'email'],
+        }],
       });
 
       return response.json(notification);
