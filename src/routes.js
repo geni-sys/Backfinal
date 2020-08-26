@@ -19,7 +19,7 @@ const ExtraIssuesController = require('./controller/ExtraIssuesController');
 routes.post('/:adm/register', userAuthController.store);
 routes.post('/:isAdm/authenticate', userAuthController.login);
 routes.post('/register', userAuthController.store);
-routes.post('/authenticate', userAuthController.login);
+routes.post('/authenticate', userAuthController.enter);
 routes.get('/newToken/:user_id', authMidleware, userController.token);
 
 // HANDLE ADMS FUNCTIONAL

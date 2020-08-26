@@ -65,7 +65,7 @@ module.exports = {
     return res.status(403).json({ error: 'You arent an ADMIN' });
   },
 
-  // "CRIAR USUÁRIO" || "/:adm/register"
+  // "CRIAR USUÁRIO" || "/admin/:adm/register"
   async store(req, res) {
     const {
       adm,
@@ -82,10 +82,10 @@ module.exports = {
 
     try {
       if (await User.findOne({
-          where: {
-            email,
-          },
-        })) {
+        where: {
+          email,
+        },
+      })) {
         return res.status(404).send({
           error: 'User already exists',
         });
@@ -124,5 +124,50 @@ module.exports = {
         id: user.id,
       }),
     });
+  },
+
+  async enter(req, res) {
+    const {
+      email,
+      password,
+    } = req.body;
+
+    let user = null;
+    try {
+      // USANDO O NODEJS
+      // select *  from  users where email = "email";
+
+      user = await User.findOne({
+        where: {
+          email,
+        },
+      });
+
+      if (!user) {
+        return res.status(400).send({
+          error: 'User not found',
+        });
+      }
+
+      if (!(await bcrypt.compare(password, user.password))) {
+        return res.status(400).send({
+          error: 'Invalid password',
+        });
+      }
+
+      user.password = undefined;
+
+      return res.json({
+        user,
+        token: generateToken({
+          id: user.id,
+        }),
+      });
+    } catch (err) {
+      console.log(err.message);
+      return res.status(404).send({
+        error: 'Bad request',
+      });
+    }
   },
 };
