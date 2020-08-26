@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const bcrypt = require('bcrypt');
 const User = require('../../model/User');
 
@@ -41,7 +42,16 @@ module.exports = {
 
       if (isAdm === 'ok' && user.canny) {
         console.log(`ADM: ${user.name} logando`);
-        console.log(`Data: ${String(new Date().getDate())}`);
+        console.log(`Dia: ${String(new Date().getDate())}`);
+        console.log(`MêS: ${String(new Date().getMonth())}`);
+        console.log(`Ano: ${String(new Date().getFullYear())}`);
+
+        return res.json({
+          user,
+          token: generateToken({
+            id: user.id,
+          }),
+        });
       }
 
       user.password = undefined;
@@ -52,12 +62,7 @@ module.exports = {
       });
     }
 
-    return res.json({
-      user,
-      token: generateToken({
-        id: user.id,
-      }),
-    });
+    return res.status(403).json({ error: 'You arent an ADMIN' });
   },
 
   // "CRIAR USUÁRIO" || "/:adm/register"
@@ -69,6 +74,7 @@ module.exports = {
       name,
       email,
       password,
+      github,
       canny,
     } = req.body;
 
@@ -91,6 +97,7 @@ module.exports = {
           name,
           email,
           password,
+          github,
           canny,
         });
       } else {
@@ -98,6 +105,7 @@ module.exports = {
           name,
           email,
           password,
+          github,
           canny,
         });
       }

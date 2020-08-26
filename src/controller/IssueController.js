@@ -199,7 +199,7 @@ module.exports = {
       }
       if (!admin.canny) {
         return response.status(400).json({
-          message: 'Only admin can delete an issue. Do a requisition for an admin',
+          message: 'Only admin can edit an issue. Do a requisition for an admin',
         });
       }
       let issue = Issue.findByPk(issue_id);
