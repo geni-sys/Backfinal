@@ -28,6 +28,7 @@ routes.put('/admin/:owner/demote/:admin_id', authMidleware, userController.demot
 // "USER"
 // routes.use(authMidleware)
 routes.get('/users', authMidleware, userController.index);
+routes.get('/users_/:user_id', authMidleware, userController.getOneUserData);
 routes.put('/users/:user_id/update', authMidleware, userController.update);
 routes.put('/users/:user_id/password/update', authMidleware, userController.password);
 routes.delete('/users/:user_logado/delete', authMidleware, userController.destroy);

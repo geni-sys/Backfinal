@@ -1,7 +1,7 @@
 const {
   Model,
-  DataTypes
-} = require("sequelize");
+  DataTypes,
+} = require('sequelize');
 
 class Questions extends Model {
   static init(sequelize) {
@@ -19,10 +19,9 @@ class Questions extends Model {
     this.belongsToMany(models.User, {
       foreignKey: 'questions_id',
       through: 'user_question',
-      as: 'users'
-    })
+      as: 'users',
+    });
   }
 }
-
 
 module.exports = Questions;

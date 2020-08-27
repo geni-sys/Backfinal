@@ -13,6 +13,7 @@ const {
 
 module.exports = {
   // "LISTAR USUÁRIOS"
+
   async index(req, res) {
     const {
       query,
@@ -46,6 +47,38 @@ module.exports = {
     }
 
     return res.json(users);
+  },
+
+  async getOneUserData(req, res) {
+    const {
+      user_id,
+    } = req.params;
+
+    let users = null;
+    try {
+      users = await User.findAll({
+        attributes: {
+          exclude: ['password', 'canny', 'createdAt', 'updatedAt'],
+        },
+        include: [{
+          association: 'questions',
+          attributes: {
+            exclude: ['user_question', 'createdAt'],
+          },
+        }],
+        where: {
+          email: user_id,
+        },
+      });
+    } catch (err) {
+      console.warn(err);
+      return res.status(404).send({
+        error: err.message,
+      });
+    }
+
+    const user = users[0];
+    return res.json(user);
   },
 
   // "DELETAR USUÁRIO"
