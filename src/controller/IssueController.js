@@ -39,7 +39,7 @@ module.exports = {
           attributes: ['id', 'title', 'body', 'tags', 'language', 'link'],
           include: [{
             association: 'user',
-            attributes: ['id', 'name'],
+            attributes: ['id', 'name', 'github'],
           }],
           limit: 10,
         });

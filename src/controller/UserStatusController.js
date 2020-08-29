@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const User = require('../model/User');
 const UserStatus = require('../model/UserStatus');
 

@@ -11,6 +11,7 @@ class User extends Model {
       password: DataTypes.STRING,
       github: DataTypes.STRING,
       canny: DataTypes.BOOLEAN,
+      completed: DataTypes.BOOLEAN,
     }, {
       sequelize,
     });
