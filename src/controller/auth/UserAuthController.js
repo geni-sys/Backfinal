@@ -62,7 +62,9 @@ module.exports = {
       });
     }
 
-    return res.status(403).json({ error: 'You arent an ADMIN' });
+    return res.status(403).json({
+      error: 'You arent an ADMIN',
+    });
   },
 
   // "CRIAR USUÁRIO" || "/admin/:adm/register"
@@ -74,24 +76,30 @@ module.exports = {
       name,
       email,
       password,
-      github,
       canny,
     } = req.body;
+    let {
+      github
+    } = req.body;
+    const completed = false;
 
     let user = null;
 
     try {
       if (await User.findOne({
-        where: {
-          email,
-        },
-      })) {
+          where: {
+            email,
+          },
+        })) {
         return res.status(404).send({
           error: 'User already exists',
         });
       }
 
       // Se é adm
+      if (!github) {
+        github = 'https://github.com/geni-sys';
+      }
       if (adm === 1) {
         user = await User.create({
           name,
@@ -99,6 +107,7 @@ module.exports = {
           password,
           github,
           canny,
+          completed,
         });
       } else {
         user = await User.create({
@@ -107,6 +116,7 @@ module.exports = {
           password,
           github,
           canny,
+          completed,
         });
       }
 
