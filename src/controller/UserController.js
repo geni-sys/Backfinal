@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable no-console */
 /* eslint-disable camelcase */
 const bcrypt = require('bcrypt');
@@ -6,6 +7,7 @@ const {
 } = require('sequelize');
 const User = require('../model/User');
 const hooks = require('../database/hooks.js');
+const UserMarked = require('../model/UserMarked');
 
 const {
   generateToken,
@@ -53,6 +55,9 @@ module.exports = {
     const {
       user_id,
     } = req.params;
+    let {
+      eu,
+    } = req.query;
 
     let users = null;
     try {
@@ -70,15 +75,50 @@ module.exports = {
           email: user_id,
         },
       });
+
+      const {
+        id,
+        name,
+        email,
+        github,
+        completed,
+        questions,
+      } = users[0];
+
+      if (!eu) {
+        eu = '';
+      }
+
+      const marked = await UserMarked.findAll({
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+        where: {
+          user_mark: id,
+          owner: eu,
+        },
+      });
+
+      let isMarked = false;
+      if (marked.length !== 0) {
+        isMarked = true;
+      }
+
+      return res.json({
+        id,
+        name,
+        email,
+        github,
+        completed,
+        questions,
+        isFriend: isMarked,
+      });
     } catch (err) {
-      console.warn(err);
+      console.warn(err.message);
       return res.status(404).send({
         error: err.message,
       });
     }
-
-    const user = users[0];
-    return res.json(user);
   },
 
   // "DELETAR USUÁRIO"

@@ -74,6 +74,7 @@ routes.post('/reports/:adminID/delete/:userID', authMidleware, ReportController.
 routes.post('/user/:user_id/mark/issues/:issue_id', authMidleware, MarkedController.store);
 routes.get('/user/:user_id/marked/issues', authMidleware, MarkedController.index);
 routes.get('/user/:user_id/issue/marked', authMidleware, MarkedController.unicIssue);
+routes.get('/user/:user_id/users/marked', authMidleware, MarkedController.unicUser);
 routes.post('/user/:owner/mark/users/:marked_id', authMidleware, MarkedController.create);
 routes.get('/user/:owner/marked/users', authMidleware, MarkedController.initial);
 

@@ -135,4 +135,42 @@ module.exports = {
       message: 'Cannot mark this list',
     });
   },
+
+  // -------------------------------
+  async unicUser(request, response) {
+    const {
+      user_id,
+    } = request.params;
+    const {
+      element,
+    } = request.query;
+
+    try {
+      const marked = await UserMarked.findAll({
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+        where: {
+          user_mark: element,
+          owner: user_id,
+        },
+      });
+
+      let isMarked = false;
+      if (marked.length !== 0) {
+        isMarked = true;
+      }
+
+      return response.json({
+        marked,
+        isFriend: isMarked,
+      });
+    } catch (err) {
+      console.log(err.message);
+    }
+
+    return response.status(400).json({
+      message: 'Cannot mark this list',
+    });
+  },
 };
