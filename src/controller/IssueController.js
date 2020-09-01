@@ -5,6 +5,7 @@ const {
 
 const Issue = require('../model/Issue');
 const User = require('../model/User');
+const IssuesMarked = require('../model/IssuesMarked');
 
 module.exports = {
   async index(request, response) {
@@ -65,7 +66,50 @@ module.exports = {
       });
     }
 
-    return response.json(issue);
+    const newIssue = issue.map(async (is) => {
+      const {
+        id,
+        title,
+        body,
+        tags,
+        languagr,
+        link,
+        user,
+      } = is;
+
+      let starry = false;
+      try {
+        const issueStarred = await IssuesMarked.findOne({
+          where: {
+            issue_id: 1,
+            user_id: 1,
+          },
+        });
+
+        console.log(issueStarred.dataValues);
+
+        if (issueStarred.id) {
+          starry = true;
+        }
+      } catch (err) {
+        console.log(err.message);
+      }
+
+      return {
+        id,
+        title,
+        body,
+        tags,
+        languagr,
+        link,
+        user,
+        starry,
+      };
+    });
+
+    // console.log(newIssue);
+
+    return response.json(newIssue);
   },
 
   async unic(request, response) {

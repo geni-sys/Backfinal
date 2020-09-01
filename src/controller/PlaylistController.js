@@ -1,36 +1,35 @@
+/* eslint-disable quotes */
 /* eslint-disable radix */
 /* eslint-disable camelcase */
-const {
-  Op,
-} = require('sequelize');
+const { Op } = require("sequelize");
 
-const User = require('../model/User');
-const Playlist = require('../model/Playlist');
-const PlaylistAndIssue = require('../model/PlaylistAndIssue');
-const Issue = require('../model/Issue');
+const User = require("../model/User");
+const Playlist = require("../model/Playlist");
+const PlaylistAndIssue = require("../model/PlaylistAndIssue");
+const Issue = require("../model/Issue");
 
 module.exports = {
   // "LISTAR PLAYLIST"
   async index(request, response) {
-    const {
-      query,
-    } = request.query;
+    const { query, requiring } = request.query;
 
     let lists = null;
     try {
       if (!query) {
         lists = await Playlist.findAll({
-          include: [{
-            association: 'issues',
-          }],
+          include: [
+            {
+              association: "issues",
+            },
+          ],
           attributes: {
-            exclude: ['createdAt', 'updatedAt', 'owner'],
+            exclude: ["createdAt", "updatedAt", "owner"],
           },
         });
       } else {
         lists = await Playlist.findAll({
           attributes: {
-            exclude: ['createdAt', 'updatedAt', 'owner'],
+            exclude: ["createdAt", "updatedAt", "owner"],
           },
           where: {
             name: {
@@ -44,23 +43,19 @@ module.exports = {
       return response.status(400).json();
     }
 
-    return response.json(lists);
+    return response.json({ lists, starry: true });
   },
 
   // "CREATE PLAYLIST"
   async store(req, res) {
-    const {
-      user_id,
-    } = req.params;
-    const {
-      name,
-    } = req.body;
+    const { user_id } = req.params;
+    const { name } = req.body;
 
     const user = await User.findByPk(user_id);
 
     if (!user) {
       return res.status(400).json({
-        message: 'Error user not found',
+        message: "Error user not found",
       });
     }
 
@@ -74,30 +69,26 @@ module.exports = {
 
   // "CREATE LIST-ISSUE RELATION"
   async create(req, res) {
-    const {
-      issuesx,
-    } = req.body;
-    const {
-      id,
-    } = req.params;
+    const { issuesx } = req.body;
+    const { id } = req.params;
 
     try {
-      const issuesy = String(issuesx).split(',');
-      const allIssues = issuesy.map(async (x) => {
+      const issuesy = String(issuesx).split(",");
+      issuesy.map(async (x) => {
         const a = parseInt(x.trim());
 
-        if (!await Issue.findByPk(a)) {
+        if (!(await Issue.findByPk(a))) {
           return res.status(400).json({
-            message: 'Error Issue not found OR deleted',
+            message: "Error Issue not found OR deleted",
           });
         }
 
         return parseInt(a);
       });
 
-      if (!await Playlist.findByPk(id)) {
+      if (!(await Playlist.findByPk(id))) {
         return res.status(400).json({
-          message: 'Error Playlist do not exists',
+          message: "Error Playlist do not exists",
         });
       }
 
@@ -122,14 +113,12 @@ module.exports = {
 
   // "PEGA LISTS DE UM USER"
   async unic(req, res) {
-    const {
-      user_id,
-    } = req.params;
+    const { user_id } = req.params;
 
     // verifyAuthencite(user_id, res, req)
 
     const user = await User.findByPk(user_id, {
-      include: ['lists'],
+      include: ["lists"],
     });
 
     return res.json(user);
@@ -137,27 +126,28 @@ module.exports = {
 
   // "PEGA UMA ÚNICA LIST"
   async unc(request, response) {
-    const {
-      list_id,
-    } = request.params;
+    const { list_id } = request.params;
     try {
       const list = await PlaylistAndIssue.findAll({
-        attributes: ['id'],
-        include: [{
-          association: 'issues',
-          attributes: ['id', 'title', 'body', 'link', 'tags'],
-        }, {
-          association: 'lists',
-          attributes: ['id', 'name'],
-          where: {
-            id: list_id,
+        attributes: ["id"],
+        include: [
+          {
+            association: "issues",
+            attributes: ["id", "title", "body", "link", "tags"],
           },
-        }],
+          {
+            association: "lists",
+            attributes: ["id", "name"],
+            where: {
+              id: list_id,
+            },
+          },
+        ],
       });
 
       if (!list) {
         return response.status(500).json({
-          error: 'list do not exists',
+          error: "list do not exists",
         });
       }
 
@@ -165,48 +155,50 @@ module.exports = {
     } catch (err) {
       console.log(err.message);
       return response.status(400).json({
-        message: 'Error in connection!',
+        message: "Error in connection!",
       });
     }
   },
 
   async stars(request, response) {
-    const {
-      id,
-    } = request.params;
-    const {
-      verb,
-    } = request.body;
+    const { id } = request.params;
+    const { verb } = request.body;
     try {
       let list = await Playlist.findByPk(id);
 
       if (!list) {
         return response.status(500).json({
-          error: 'list do not exists',
+          error: "list do not exists",
         });
       }
 
       if (verb === 1) {
         const more = parseInt(list.stars) + 1;
 
-        list = await Playlist.update({
-          stars: more,
-        }, {
-          where: {
-            id,
+        list = await Playlist.update(
+          {
+            stars: more,
           },
-        });
+          {
+            where: {
+              id,
+            },
+          }
+        );
       } else {
         const less = parseInt(list.stars) - 1;
 
         if (less !== 0) {
-          list = await Playlist.update({
-            stars: less,
-          }, {
-            where: {
-              id,
+          list = await Playlist.update(
+            {
+              stars: less,
             },
-          });
+            {
+              where: {
+                id,
+              },
+            }
+          );
         }
       }
 
@@ -214,48 +206,50 @@ module.exports = {
     } catch (err) {
       console.log(err.message);
       return response.status(400).json({
-        message: 'Error in connection!',
+        message: "Error in connection!",
       });
     }
   },
 
   async learning(request, response) {
-    const {
-      id,
-    } = request.params;
-    const {
-      verb,
-    } = request.body;
+    const { id } = request.params;
+    const { verb } = request.body;
     try {
       let list = await Playlist.findByPk(id);
 
       if (!list) {
         return response.status(500).json({
-          error: 'list do not exists',
+          error: "list do not exists",
         });
       }
 
       if (verb === 1) {
         const more = parseInt(list.users_learning) + 1;
 
-        list = await Playlist.update({
-          users_learning: more,
-        }, {
-          where: {
-            id,
+        list = await Playlist.update(
+          {
+            users_learning: more,
           },
-        });
+          {
+            where: {
+              id,
+            },
+          }
+        );
       } else {
         const less = parseInt(list.users_learning) - 1;
 
         if (less !== 0) {
-          list = await Playlist.update({
-            users_learning: less,
-          }, {
-            where: {
-              id,
+          list = await Playlist.update(
+            {
+              users_learning: less,
             },
-          });
+            {
+              where: {
+                id,
+              },
+            }
+          );
         }
       }
 
@@ -263,15 +257,13 @@ module.exports = {
     } catch (err) {
       console.log(err.message);
       return response.status(400).json({
-        message: 'Error in connection!',
+        message: "Error in connection!",
       });
     }
   },
 
   async delete(req, res) {
-    const {
-      list_id,
-    } = req.params;
+    const { list_id } = req.params;
 
     try {
       const response = await Playlist.destroy({
@@ -285,9 +277,8 @@ module.exports = {
       console.log(err.message);
 
       return res.status(400).json({
-        message: 'Do not could delete',
+        message: "Do not could delete",
       });
     }
   },
-
 };
