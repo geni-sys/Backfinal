@@ -1,14 +1,15 @@
+/* eslint-disable quotes */
 /* eslint-disable camelcase */
 /* eslint-disable radix */
-const Feedbacks = require('../model/Feedbacks');
-const User = require('../model/User');
+const Feedbacks = require("../model/Feedbacks");
+const User = require("../model/User");
 
 module.exports = {
   // GET ALL FEEDBACKS
   async index(request, response) {
     try {
       const feedbacks = await Feedbacks.findAll({
-        attributes: ['id', 'user_id', 'title', 'message', 'stars'],
+        attributes: ["id", "user_id", "title", "message", "stars"],
         limit: 10,
       });
 
@@ -18,25 +19,19 @@ module.exports = {
     }
 
     return response.status(400).json({
-      message: 'Error, couldn`t get messages',
+      message: "Error, couldn`t get messages",
     });
   },
   // CREATE A NEW FEEDBACK
   async store(request, response) {
-    const {
-      user_id,
-    } = request.params;
-    const {
-      title,
-      message,
-      stars,
-    } = request.body;
+    const { user_id } = request.params;
+    const { title, message, stars } = request.body;
 
     try {
       const user = await User.findByPk(user_id);
       if (!user) {
         return response.status(400).json({
-          message: 'Only users can create messages',
+          message: "Only users can create messages",
         });
       }
 
@@ -53,19 +48,17 @@ module.exports = {
     }
 
     return response.status(400).json({
-      message: 'Error, couldn`t crate a feedback!',
+      message: "Error, couldn`t crate a feedback!",
     });
   },
 
   // GET A UNIC FEEDBACKasync
   async unic(request, response) {
-    const {
-      feed,
-    } = request.params;
+    const { feed } = request.params;
 
     try {
       const feeds = await Feedbacks.findByPk(feed, {
-        attributes: ['id', 'user_id', 'title', 'message', 'stars'],
+        attributes: ["id", "user_id", "title", "message", "stars"],
       });
 
       return response.json(feeds);
@@ -74,7 +67,7 @@ module.exports = {
     }
 
     return response.status(400).json({
-      message: 'Error, couldn`t get message',
+      message: "Error, couldn`t get message",
     });
   },
 };

@@ -1,38 +1,33 @@
+/* eslint-disable quotes */
 /* eslint-disable radix */
 /* eslint-disable no-console */
 /* eslint-disable camelcase */
-const bcrypt = require('bcrypt');
-const {
-  Op,
-} = require('sequelize');
-const User = require('../model/User');
-const hooks = require('../database/hooks.js');
-const UserMarked = require('../model/UserMarked');
+const bcrypt = require("bcrypt");
+const { Op } = require("sequelize");
+const User = require("../model/User");
+const hooks = require("../database/hooks.js");
+const UserMarked = require("../model/UserMarked");
 
-const {
-  generateToken,
-} = require('./utils/functions');
+const { generateToken } = require("./utils/functions");
 
 module.exports = {
   // "LISTAR USUÁRIOS"
 
   async index(req, res) {
-    const {
-      query,
-    } = req.query;
+    const { query } = req.query;
 
-    let users = null;
+    let users = [];
     try {
       if (!query) {
         users = await User.findAll({
           attributes: {
-            exclude: ['password'],
+            exclude: ["password"],
           },
         });
       } else {
         users = await User.findAll({
           attributes: {
-            exclude: ['password', 'canny', 'createdAt', 'updatedAt'],
+            exclude: ["password", "canny", "createdAt", "updatedAt"],
           },
           where: {
             name: {
@@ -44,7 +39,7 @@ module.exports = {
     } catch (err) {
       console.warn(err);
       return res.status(404).send({
-        error: 'Bad request',
+        error: "Bad request",
       });
     }
 
@@ -52,46 +47,37 @@ module.exports = {
   },
 
   async getOneUserData(req, res) {
-    const {
-      user_id,
-    } = req.params;
-    let {
-      eu,
-    } = req.query;
+    const { user_id } = req.params;
+    let { eu } = req.query;
 
     let users = null;
     try {
       users = await User.findAll({
         attributes: {
-          exclude: ['password', 'canny', 'createdAt', 'updatedAt'],
+          exclude: ["password", "canny", "createdAt", "updatedAt"],
         },
-        include: [{
-          association: 'questions',
-          attributes: {
-            exclude: ['user_question', 'createdAt'],
+        include: [
+          {
+            association: "questions",
+            attributes: {
+              exclude: ["user_question", "createdAt"],
+            },
           },
-        }],
+        ],
         where: {
           email: user_id,
         },
       });
 
-      const {
-        id,
-        name,
-        email,
-        github,
-        completed,
-        questions,
-      } = users[0];
+      const { id, name, email, github, completed, questions } = users[0];
 
       if (!eu) {
-        eu = '';
+        eu = "";
       }
 
       const marked = await UserMarked.findAll({
         attributes: {
-          exclude: ['createdAt', 'updatedAt'],
+          exclude: ["createdAt", "updatedAt"],
         },
         where: {
           user_mark: id,
@@ -123,9 +109,7 @@ module.exports = {
 
   // "DELETAR USUÁRIO"
   async destroy(req, res) {
-    const {
-      user_logado,
-    } = req.params;
+    const { user_logado } = req.params;
     const authHeader = req.headers.authorization;
 
     let user = null;
@@ -139,7 +123,7 @@ module.exports = {
     });
     if (!user) {
       return res.status(400).json({
-        error: 'Account not found',
+        error: "Account not found",
       });
     }
 
@@ -148,7 +132,7 @@ module.exports = {
     // se o logado esta deletando
     if (!(Number(user_logado) === Number(req.userID))) {
       return res.status(400).send({
-        error: 'Only can delete your account',
+        error: "Only can delete your account",
       });
     }
 
@@ -161,23 +145,20 @@ module.exports = {
       });
 
       if (user) {
-        return res.status(200).send('sucess');
+        return res.status(200).send("sucess");
       }
     } catch (err) {
       console.log(err);
     }
 
     return res.status(404).send({
-      error: 'Account not regitered',
+      error: "Account not regitered",
     });
   },
 
   // "ADMIN DELETE ACCOUNT OF USER"
   async delete(req, res) {
-    const {
-      admin,
-      user_id,
-    } = req.params;
+    const { admin, user_id } = req.params;
 
     let user = null;
     let adm = null;
@@ -190,14 +171,14 @@ module.exports = {
       });
       if (!user) {
         return res.status(400).json({
-          error: 'Account not found',
+          error: "Account not found",
         });
       }
 
       adm = await User.findByPk(admin);
       if (!adm) {
         return res.status(400).json({
-          error: '[ADMIN] :: Account not found',
+          error: "[ADMIN] :: Account not found",
         });
       }
       if (adm.canny) {
@@ -207,36 +188,36 @@ module.exports = {
           },
         });
 
-        return res.status(200).send('sucess');
+        return res.status(200).send("sucess");
       }
       return res.status(404).json({
-        message: 'You are not ADMIN!',
+        message: "You are not ADMIN!",
       });
     } catch (err) {
       console.log(err);
     }
 
     return res.status(404).send({
-      error: 'Account not regitered',
+      error: "Account not regitered",
     });
   },
 
   // "ADMIN DEMOTE A ADMIN_ID"
   async demote(req, res) {
-    const {
-      admin_id,
-      owner,
-    } = req.params;
+    const { admin_id, owner } = req.params;
 
     try {
       if (parseInt(owner) === 1) {
-        const edited = await User.update({
-          canny: false,
-        }, {
-          where: {
-            id: admin_id,
+        const edited = await User.update(
+          {
+            canny: false,
           },
-        });
+          {
+            where: {
+              id: admin_id,
+            },
+          }
+        );
 
         return res.json(edited);
       }
@@ -249,25 +230,22 @@ module.exports = {
 
   // "UPDATE NAME, BIO AND GITHUB"
   async update(req, res) {
-    const {
-      name,
-      bio,
-      github,
-    } = req.body;
-    const {
-      user_id,
-    } = req.params;
+    const { name, bio, github } = req.body;
+    const { user_id } = req.params;
 
     try {
-      const updated = await User.update({
-        name,
-        github,
-      }, {
-        where: {
-          id: user_id,
+      const updated = await User.update(
+        {
+          name,
+          github,
         },
-        returning: true,
-      });
+        {
+          where: {
+            id: user_id,
+          },
+          returning: true,
+        }
+      );
 
       console.log(bio);
 
@@ -287,38 +265,36 @@ module.exports = {
   },
 
   async password(req, res) {
-    const {
-      oldPassword,
-      newPassword,
-    } = req.body;
-    const {
-      user_id,
-    } = req.params;
+    const { oldPassword, newPassword } = req.body;
+    const { user_id } = req.params;
 
     try {
       const user = await User.findByPk(user_id);
       if (!user) {
         return res.status(400).json({
-          error: 'User dont exists',
+          error: "User dont exists",
         });
       }
 
       if (!(await bcrypt.compare(oldPassword, user.password))) {
         return res.status(400).send({
-          error: 'Invalid password',
+          error: "Invalid password",
         });
       }
 
       // console.log(word);
       return hooks.useCriptoToHash(newPassword).then(async (created) => {
-        const updated = await User.update({
-          password: String(created),
-        }, {
-          where: {
-            id: user_id,
+        const updated = await User.update(
+          {
+            password: String(created),
           },
-          returning: true,
-        });
+          {
+            where: {
+              id: user_id,
+            },
+            returning: true,
+          }
+        );
 
         return res.json({
           oparation: !!updated[1],
@@ -339,16 +315,14 @@ module.exports = {
   },
 
   async token(req, res) {
-    const {
-      user_id,
-    } = req.params;
+    const { user_id } = req.params;
 
     try {
       const user = await User.findByPk(user_id);
 
       if (!user) {
         return res.status(400).json({
-          error: 'User not found',
+          error: "User not found",
         });
       }
 
