@@ -62,8 +62,9 @@ module.exports = {
       });
 
       const newFilter = await forFilter.map(async (element) => {
+        const { body, language } = element.dataValues;
         const extrapolate = JSON.parse(JSON.stringify(element));
-        const { id, title, body, tags, language, link, user } = extrapolate;
+        const { id, title, tags, link, user } = extrapolate;
 
         const issueStarred = await IssuesMarked.findOne({
           where: {

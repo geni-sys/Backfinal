@@ -7,6 +7,7 @@ const User = require("../model/User");
 const Playlist = require("../model/Playlist");
 const PlaylistAndIssue = require("../model/PlaylistAndIssue");
 const Issue = require("../model/Issue");
+const IssuesMarked = require("../model/IssuesMarked");
 
 module.exports = {
   // "LISTAR PLAYLIST"
@@ -37,6 +38,33 @@ module.exports = {
             },
           },
         });
+
+        const newFilter = await lists.map(async (element) => {
+          const extrapolate = JSON.parse(JSON.stringify(element));
+          const { id, name, stars, users_learning } = extrapolate;
+
+          const listStarred = await IssuesMarked.findOne({
+            where: {
+              issue_id: 1,
+              user_id: 1,
+            },
+          });
+          let starry = false;
+          const starId = JSON.parse(JSON.stringify(listStarred));
+          if (starId) {
+            starry = true;
+          }
+
+          return {
+            id,
+            name,
+            stars,
+            users_learning,
+            starry,
+          };
+        });
+
+        lists = newFilter;
       }
     } catch (err) {
       console.log(err.message);
