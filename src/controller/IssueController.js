@@ -26,7 +26,7 @@ module.exports = {
   },
 
   async all(request, response) {
-    const { query } = request.query;
+    const { query, user_id } = request.query;
 
     try {
       let issue = null;
@@ -69,7 +69,7 @@ module.exports = {
         const issueStarred = await IssuesMarked.findOne({
           where: {
             issue_id: id,
-            user_id: 1,
+            user_id,
           },
         });
         let starry = false;

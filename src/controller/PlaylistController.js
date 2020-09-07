@@ -7,12 +7,12 @@ const User = require("../model/User");
 const Playlist = require("../model/Playlist");
 const PlaylistAndIssue = require("../model/PlaylistAndIssue");
 const Issue = require("../model/Issue");
-const IssuesMarked = require("../model/IssuesMarked");
+const PlaylistMarked = require("../model/PlaylistMarked");
 
 module.exports = {
   // "LISTAR PLAYLIST"
   async index(request, response) {
-    const { query, requiring } = request.query;
+    const { query, user_id } = request.query;
 
     let lists = null;
     try {
@@ -27,51 +27,52 @@ module.exports = {
             exclude: ["createdAt", "updatedAt", "owner"],
           },
         });
-      } else {
-        lists = await Playlist.findAll({
-          attributes: {
-            exclude: ["createdAt", "updatedAt", "owner"],
-          },
-          where: {
-            name: {
-              [Op.like]: `%${query}%`,
-            },
-          },
-        });
 
-        const newFilter = await lists.map(async (element) => {
-          const extrapolate = JSON.parse(JSON.stringify(element));
-          const { id, name, stars, users_learning } = extrapolate;
-
-          const listStarred = await IssuesMarked.findOne({
-            where: {
-              issue_id: 1,
-              user_id: 1,
-            },
-          });
-          let starry = false;
-          const starId = JSON.parse(JSON.stringify(listStarred));
-          if (starId) {
-            starry = true;
-          }
-
-          return {
-            id,
-            name,
-            stars,
-            users_learning,
-            starry,
-          };
-        });
-
-        lists = newFilter;
+        return response.json({ lists });
       }
+
+      const forFilter = Playlist.findAll({
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "owner"],
+        },
+        where: {
+          name: {
+            [Op.like]: `%${query}%`,
+          },
+        },
+      });
+
+      const newFilter = await forFilter.map(async (element) => {
+        const extrapolate = JSON.parse(JSON.stringify(element));
+        const { id, name, stars, users_learning } = extrapolate;
+
+        const listStarred = await PlaylistMarked.findOne({
+          where: {
+            list_id: id,
+            user_id,
+          },
+        });
+        let starry = false;
+        const starId = JSON.parse(JSON.stringify(listStarred));
+        if (starId) {
+          starry = true;
+        }
+
+        return {
+          id,
+          name,
+          stars,
+          users_learning,
+          starry,
+        };
+      });
+      console.log(newFilter);
+
+      return response.json(newFilter);
     } catch (err) {
       console.log(err.message);
       return response.status(400).json();
     }
-
-    return response.json({ lists, starry: true });
   },
 
   // "CREATE PLAYLIST"

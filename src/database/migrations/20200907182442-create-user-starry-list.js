@@ -1,17 +1,17 @@
 /* eslint-disable quotes */
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable("issues_marked", {
+    queryInterface.createTable("playlist_marked", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false,
       },
-      issue_id: {
+      list_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: "issue",
+          model: "playlist",
           key: "id",
         },
         allowNull: false,
@@ -36,5 +36,5 @@ module.exports = {
     }),
 
   down: (queryInterface, Sequelize) =>
-    queryInterface.dropTable("issues_marked"),
+    queryInterface.dropTable("playlist_marked"),
 };

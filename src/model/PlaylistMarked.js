@@ -1,25 +1,25 @@
 /* eslint-disable quotes */
 const { Model, DataTypes } = require("sequelize");
 
-class ListMarked extends Model {
+class PlaylistMarked extends Model {
   static init(sequelize) {
     super.init(
       {
-        issue_id: DataTypes.INTEGER,
+        list_id: DataTypes.INTEGER,
         user_id: DataTypes.INTEGER,
       },
       {
         sequelize,
-        tableName: "issues_marked",
+        tableName: "playlist_marked",
       }
     );
   }
 
   static associate(models) {
     // "WITH ISSUE 1-N"
-    this.belongsTo(models.Issue, {
-      foreignKey: "issue_id",
-      as: "issue",
+    this.belongsTo(models.Playlist, {
+      foreignKey: "list_id",
+      as: "list",
     });
 
     // WITH PLAYLIST 1-N
@@ -30,4 +30,4 @@ class ListMarked extends Model {
   }
 }
 
-module.exports = ListMarked;
+module.exports = PlaylistMarked;
