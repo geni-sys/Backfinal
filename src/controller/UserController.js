@@ -225,7 +225,7 @@ module.exports = {
       console.log(err.message);
     }
 
-    return res.status(400).json();
+    return res.status(401).json({ error: "Apenas CEO pode rebaixar alguém" });
   },
 
   // "UPDATE NAME, BIO AND GITHUB"

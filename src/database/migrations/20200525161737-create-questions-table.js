@@ -1,8 +1,7 @@
-'use strict';
-
+/* eslint-disable quotes */
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('questions', {
+  up: (queryInterface, Sequelize) =>
+    queryInterface.createTable("questions", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -33,10 +32,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-    });
-  },
+    }),
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('questions');
-  }
+  down: (queryInterface, Sequelize) => queryInterface.dropTable("questions"),
 };

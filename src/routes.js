@@ -164,6 +164,37 @@ routes.get("/feedbacks/:feed", authMidleware, FeedbackController.unic);
 // HANDLE EXTRAS methods
 // USERS
 routes.get("/counts/issues", authMidleware, ExtraIssuesController.index);
+routes.get(
+  "/counts/users",
+  authMidleware,
+  ExtraIssuesController.getUserFeatures
+);
+routes.get(
+  "/counts/feedbacks",
+  authMidleware,
+  ExtraIssuesController.getFeedbackFeatures
+);
+routes.get(
+  "/counts/lists",
+  authMidleware,
+  ExtraIssuesController.getListFeatures
+);
+// ----------- UPDATES
+routes.put(
+  "/configurate/user/:user_id/destaque",
+  authMidleware,
+  ExtraIssuesController.setUserAsFeatured
+);
+routes.put(
+  "/configurate/issue/:issue_id/destaque",
+  authMidleware,
+  ExtraIssuesController.setIssueAsFeatured
+);
+routes.put(
+  "/configurate/list/:list_id/destaque",
+  authMidleware,
+  ExtraIssuesController.setListAsFeatured
+);
 
 // HANDLE NOTIFICATIONS
 routes.get("/notifications/:receiver", UserNotificationsController.index);

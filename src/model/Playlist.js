@@ -1,38 +1,40 @@
-const {
-  Model,
-  DataTypes,
-} = require('sequelize');
+/* eslint-disable quotes */
+const { Model, DataTypes } = require("sequelize");
 
 class Playlist extends Model {
   static init(sequelize) {
-    super.init({
-      name: DataTypes.STRING,
-      stars: DataTypes.INTEGER,
-      users_learning: DataTypes.INTEGER,
-    }, {
-      sequelize,
-      tableName: 'Playlist',
-    });
+    super.init(
+      {
+        name: DataTypes.STRING,
+        stars: DataTypes.INTEGER,
+        users_learning: DataTypes.INTEGER,
+        destaque: DataTypes.BOOLEAN,
+      },
+      {
+        sequelize,
+        tableName: "Playlist",
+      }
+    );
   }
 
   static associate(models) {
     // "WITH ISSUE N-N"
     this.belongsToMany(models.Issue, {
-      foreignKey: 'list',
-      through: 'playlist_and_issue',
-      as: 'issues',
+      foreignKey: "list",
+      through: "playlist_and_issue",
+      as: "issues",
     });
 
     // WITH USER 1-N
     this.belongsTo(models.User, {
-      foreignKey: 'owner',
-      as: 'user',
+      foreignKey: "owner",
+      as: "user",
     });
 
     // WITH PLAYLISTandISSUE 1-N
     this.belongsTo(models.PlaylistAndIssue, {
-      foreignKey: 'id',
-      as: 'list_issue',
+      foreignKey: "id",
+      as: "list_issue",
     });
   }
 }
