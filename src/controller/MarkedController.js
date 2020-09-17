@@ -3,9 +3,10 @@
 const Sequelize = require("../database");
 const IssuesMarked = require("../model/IssuesMarked");
 const UserMarked = require("../model/UserMarked");
+const PlaylistMarked = require("../model/PlaylistMarked");
 
 module.exports = {
-  // GET LIST OF ISSUEs MARKED
+  // GET LIST OF ISSUEs MARKED FROM USER
   async index(request, response) {
     const { user_id } = request.params;
 
@@ -34,7 +35,7 @@ module.exports = {
     });
   },
 
-  // ADD ISSUE IN MARKED LISTS
+  // ADD ISSUE IN MARKED IN LISTS FROM USER
   async store(request, response) {
     const { user_id, issue_id } = request.params;
 
@@ -67,7 +68,7 @@ module.exports = {
     });
   },
 
-  // GET LIST OF USERS MARKED
+  // GET LIST OF USERS MARKED FROM USER
   async initial(request, response) {
     const { owner } = request.params;
 
@@ -96,7 +97,7 @@ module.exports = {
     });
   },
 
-  // ADD USER IN MARKED LIST
+  // ADD USER IN MARKED LIST FROM USER
   async create(request, response) {
     const { owner, marked_id } = request.params;
 
@@ -120,6 +121,68 @@ module.exports = {
 
     return response.status(400).json({
       message: "Cannot mark this user",
+    });
+  },
+
+  // GET LIST OF PLAYLISTS MARKED FROM USER
+  async getListsMarkeds(request, response) {
+    const { owner } = request.params;
+
+    try {
+      const marked = await PlaylistMarked.findAll({
+        include: [
+          {
+            association: "list",
+          },
+        ],
+        attributes: {
+          exclude: ["createdAt"],
+        },
+        where: {
+          user_id: owner,
+        },
+      });
+
+      return response.json(marked);
+    } catch (err) {
+      console.log(err.message);
+    }
+
+    return response.status(400).json({
+      message: "Cannot mark this list",
+    });
+  },
+
+  // ADD ISSUE IN MARKED IN LISTS FROM USER
+  async createPlaylists(request, response) {
+    const { user_id, list_id } = request.params;
+
+    try {
+      let mark = null;
+
+      const alreadyIsMarked = await PlaylistMarked.findAll({
+        where: { user_id, list_id },
+        limit: 1,
+      });
+
+      if ((alreadyIsMarked.length === 0) === false) {
+        // console.log(alreadyIsMarked);
+        // console.log(alreadyIsMarked);
+        return response.json({ message: "Already marked" });
+      }
+
+      mark = await PlaylistMarked.create({
+        user_id,
+        list_id,
+      });
+
+      return response.json(mark);
+    } catch (err) {
+      console.log(err.message);
+    }
+
+    return response.status(400).json({
+      message: "Cannot mark this list",
     });
   },
 

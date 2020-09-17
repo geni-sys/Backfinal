@@ -11,8 +11,65 @@ const UserMarked = require("../model/UserMarked");
 const { generateToken } = require("./utils/functions");
 
 module.exports = {
-  // "LISTAR USUÁRIOS"
+  // search: STARRY
+  async starry(request, response) {
+    const { query, user_id } = request.query;
 
+    try {
+      const forFilter = User.findAll({
+        attributes: ["id", "name", "email", "github", "completed", "destaque"],
+        where: {
+          name: {
+            [Op.like]: `%${query}%`,
+          },
+        },
+        // include: [
+        //   {
+        //     association: "user",
+        //     attributes: ["id", "name", "email"],
+        //   },
+        // ],
+        limit: 10,
+      });
+
+      const newFilter = await forFilter.map(async (element) => {
+        const extrapolate = JSON.parse(JSON.stringify(element));
+        const { id, name, email, github, completed, destaque } = extrapolate;
+
+        const userStarred = await UserMarked.findOne({
+          where: {
+            owner: user_id,
+            user_mark: id,
+          },
+        });
+        let starry = false;
+        const starId = JSON.parse(JSON.stringify(userStarred));
+        if (starId) {
+          starry = true;
+        }
+
+        // console.log(JSON.parse(JSON.stringify(userStarred)));
+        return {
+          id,
+          name,
+          email,
+          github,
+          completed,
+          destaque,
+          starry,
+        };
+      });
+
+      return response.json(newFilter);
+    } catch (err) {
+      console.log(err.message);
+      return response.status(400).json({
+        message: "Error in connection",
+      });
+    }
+  },
+
+  // "LISTAR USUÁRIOS"
   async index(req, res) {
     const { query } = req.query;
 

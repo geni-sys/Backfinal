@@ -25,6 +25,63 @@ module.exports = {
     return response.json(user.issues);
   },
 
+  // LEARING-ISSUE
+  async starry(request, response) {
+    const { issue_id, user_id } = request.params;
+
+    try {
+      const forFilter = Issue.findAll({
+        attributes: ["id", "title", "body", "tags", "link"],
+        where: {
+          id: issue_id,
+        },
+        include: [
+          {
+            association: "user",
+            attributes: ["id", "name", "email"],
+          },
+        ],
+        limit: 1,
+      });
+
+      const newFilter = await forFilter.map(async (element) => {
+        const extrapolate = JSON.parse(JSON.stringify(element));
+        const { id, title, tags, link, user, body, language } = extrapolate;
+
+        const issueStarred = await IssuesMarked.findOne({
+          where: {
+            issue_id: id,
+            user_id,
+          },
+        });
+        let starry = false;
+        const starId = JSON.parse(JSON.stringify(issueStarred));
+        if (starId) {
+          starry = true;
+        }
+
+        // console.log(JSON.parse(JSON.stringify(issueStarred)));
+        return {
+          id,
+          title,
+          body,
+          tags,
+          language,
+          link,
+          user,
+          starry,
+        };
+      });
+
+      return response.json(newFilter);
+    } catch (err) {
+      console.log(err.message);
+      return response.status(400).json({
+        message: err.message,
+      });
+    }
+  },
+
   async all(request, response) {
     const { query, user_id } = request.query;
 

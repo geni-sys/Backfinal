@@ -34,6 +34,7 @@ routes.put(
 // "USER"
 // routes.use(authMidleware)
 routes.get("/users", authMidleware, userController.index);
+routes.get("/users_query", authMidleware, userController.starry);
 routes.get("/users_/:user_id", authMidleware, userController.getOneUserData);
 routes.put("/users/:user_id/update", authMidleware, userController.update);
 routes.put(
@@ -66,6 +67,11 @@ routes.get(
 
 // "ISSUE"
 routes.get("/user/:owner_id/issues", authMidleware, issueController.index);
+routes.get(
+  "/issues/starry/:user_id/:issue_id",
+  authMidleware,
+  issueController.starry
+);
 routes.get("/issues", authMidleware, issueController.all);
 routes.get("/issues_/featureds", authMidleware, issueController.features);
 routes.get("/issues/:issue_id", authMidleware, issueController.unic);
@@ -130,6 +136,11 @@ routes.post(
   authMidleware,
   MarkedController.store
 );
+routes.post(
+  "/user/:user_id/mark/playlists/:list_id",
+  authMidleware,
+  MarkedController.createPlaylists
+);
 routes.get(
   "/user/:user_id/marked/issues",
   authMidleware,
@@ -154,6 +165,11 @@ routes.get(
   "/user/:owner/marked/users",
   authMidleware,
   MarkedController.initial
+);
+routes.get(
+  "/user/:owner/marked/playlists",
+  authMidleware,
+  MarkedController.getListsMarkeds
 );
 
 // HANDLE FEEDBACK

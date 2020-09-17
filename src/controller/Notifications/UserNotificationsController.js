@@ -1,50 +1,73 @@
+/* eslint-disable quotes */
 /* eslint-disable no-console */
 /* eslint-disable camelcase */
-const {
-  Op,
-} = require('sequelize');
-const User = require('../../model/User');
-const Notifications = require('../../model/Notifications');
+const { Op } = require("sequelize");
+const User = require("../../model/User");
+const Notifications = require("../../model/Notifications");
 
 module.exports = {
   // "LISTAR NOTIFICATIONS OF UNIC USER"
   async index(request, response) {
-    const {
-      receiver,
-    } = request.params;
-    const {
-      mentioned,
-      our_team,
-    } = request.query;
+    const { receiver } = request.params;
+    const { mentioned, our_team, requesting } = request.query;
 
     try {
       const snd = await User.findByPk(receiver);
       if (!snd) {
         return response.status(400).send({
-          error: 'User dont exists',
+          error: "User dont exists",
         });
       }
 
       let notification = [];
 
-      if (mentioned) {
+      if (requesting) {
         notification = await Notifications.findAll({
           attributes: {
-            exclude: ['createdAt'],
+            exclude: ["createdAt"],
           },
           where: {
             receiver,
             type: {
-              [Op.like]: '%mention%',
+              [Op.like]: "%request%",
             },
           },
-          include: [{
-            association: 'de',
-            attributes: ['id', 'name', 'email'],
-          }, {
-            association: 'para',
-            attributes: ['id', 'name', 'email'],
-          }],
+          include: [
+            {
+              association: "de",
+              attributes: ["id", "name", "email", "github"],
+            },
+            {
+              association: "para",
+              attributes: ["id", "name", "email", "github"],
+            },
+          ],
+        });
+
+        return response.json(notification);
+      }
+
+      if (mentioned) {
+        notification = await Notifications.findAll({
+          attributes: {
+            exclude: ["createdAt"],
+          },
+          where: {
+            receiver,
+            type: {
+              [Op.like]: "%mention%",
+            },
+          },
+          include: [
+            {
+              association: "de",
+              attributes: ["id", "name", "email", "github"],
+            },
+            {
+              association: "para",
+              attributes: ["id", "name", "email", "github"],
+            },
+          ],
         });
 
         return response.json(notification);
@@ -53,21 +76,24 @@ module.exports = {
       if (our_team) {
         notification = await Notifications.findAll({
           attributes: {
-            exclude: ['createdAt'],
+            exclude: ["createdAt"],
           },
           where: {
             receiver,
             type: {
-              [Op.like]: '%ourteam%',
+              [Op.like]: "%ourteam%",
             },
           },
-          include: [{
-            association: 'de',
-            attributes: ['id', 'name', 'email'],
-          }, {
-            association: 'para',
-            attributes: ['id', 'name', 'email'],
-          }],
+          include: [
+            {
+              association: "de",
+              attributes: ["id", "name", "email", "github"],
+            },
+            {
+              association: "para",
+              attributes: ["id", "name", "email", "github"],
+            },
+          ],
         });
 
         return response.json(notification);
@@ -75,18 +101,21 @@ module.exports = {
 
       notification = await Notifications.findAll({
         attributes: {
-          exclude: ['createdAt'],
+          exclude: ["createdAt"],
         },
         where: {
           receiver,
         },
-        include: [{
-          association: 'de',
-          attributes: ['id', 'name', 'email'],
-        }, {
-          association: 'para',
-          attributes: ['id', 'name', 'email'],
-        }],
+        include: [
+          {
+            association: "de",
+            attributes: ["id", "name", "email", "github"],
+          },
+          {
+            association: "para",
+            attributes: ["id", "name", "email", "github"],
+          },
+        ],
       });
 
       return response.json(notification);
@@ -103,21 +132,14 @@ module.exports = {
   },
 
   async store(request, response) {
-    const {
-      sender,
-      receiver,
-    } = request.params;
-    const {
-      transcription,
-      state,
-      type,
-    } = request.body;
+    const { sender, receiver } = request.params;
+    const { transcription, state, type } = request.body;
 
     try {
       const rcv = await User.findByPk(receiver);
       if (!rcv) {
         return response.status(400).send({
-          error: 'Receiver dont exists',
+          error: "Receiver dont exists",
         });
       }
 
@@ -141,5 +163,4 @@ module.exports = {
     //   error: 'Bad request',
     // });
   },
-
 };
