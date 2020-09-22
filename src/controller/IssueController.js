@@ -52,6 +52,12 @@ module.exports = {
         }
 
         const issues = await Issue.findAll({
+          include: [
+            {
+              association: "user",
+              attributes: ["id", "name", "email", "github", "updatedAt"],
+            },
+          ],
           where: {
             owner: Number(user_mark),
           },
