@@ -5,6 +5,7 @@ const { Op } = require("sequelize");
 const Issue = require("../model/Issue");
 const User = require("../model/User");
 const IssuesMarked = require("../model/IssuesMarked");
+const UserMarked = require("../model/UserMarked");
 
 module.exports = {
   async index(request, response) {
@@ -23,6 +24,49 @@ module.exports = {
     }
 
     return response.json(user.issues);
+  },
+
+  // Filer ISSUEs
+  async getIssuesFiltereds(request, response) {
+    const { owner_id } = request.params;
+
+    let users = null;
+
+    try {
+      users = UserMarked.findAll({
+        attributes: ["id", "owner", "user_mark", "updatedAt"],
+        include: {
+          association: "marked",
+          attributes: ["name", "updatedAt"],
+        },
+        where: {
+          owner: owner_id,
+        },
+      });
+
+      const newFilter = await users.map(async (element) => {
+        const extrapolate = JSON.parse(JSON.stringify(element));
+        const { user_mark } = extrapolate;
+        if (!user_mark) {
+          return null;
+        }
+
+        const issues = await Issue.findAll({
+          where: {
+            owner: Number(user_mark),
+          },
+        });
+
+        return issues;
+      });
+
+      return response.json(newFilter[0] || []);
+    } catch (err) {
+      console.log(err);
+    }
+
+    return { message: "No Article found!" };
+    // return response.json(users);
   },
 
   // LEARING-ISSUE

@@ -1,4 +1,5 @@
-const bcrypt = require('bcrypt');
+/* eslint-disable quotes */
+const bcrypt = require("bcrypt");
 
 module.exports = {
   async useHashToCripto(user) {

@@ -68,6 +68,11 @@ routes.get(
 // "ISSUE"
 routes.get("/user/:owner_id/issues", authMidleware, issueController.index);
 routes.get(
+  "/home/:owner_id/issues",
+  authMidleware,
+  issueController.getIssuesFiltereds
+);
+routes.get(
   "/issues/starry/:user_id/:issue_id",
   authMidleware,
   issueController.starry
