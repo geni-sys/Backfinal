@@ -7,8 +7,27 @@ module.exports = {
   // get scores from user
   async index(request, response) {
     const { user_id } = request.params;
+    const { email } = request.body;
 
     try {
+      if (Number(user_id) === 0) {
+        if (!email) {
+          return response.status(400).json({ error: "No email provaided" });
+        }
+        console.log(email);
+        const scores = await Scores.findAll({
+          include: {
+            association: "user",
+            where: { email },
+          },
+        });
+        if (!scores) {
+          return response.json({ message: "Scores do not exists!" });
+        }
+
+        return response.json(scores);
+      }
+
       const user = await User.findByPk(user_id);
       if (!user) {
         return response.json({ message: "User do not exists!" });
@@ -80,9 +99,9 @@ module.exports = {
       if (all) {
         const updated_scores = await Scores.update(
           {
-            issues_createds: Number(amount_issues) + 5,
-            lists_createds: Number(amount_lists) + 5,
-            anotations: Number(amount_anotations) + 5,
+            issues_createds: Number(amount_issues) + 2,
+            lists_createds: Number(amount_lists) + 2,
+            anotations: Number(amount_anotations) + 2,
           },
           { where: { owner: user_id } }
         );
@@ -120,7 +139,7 @@ module.exports = {
       if (issue) {
         const updated_scores = await Scores.update(
           {
-            issues_createds: Number(amount_issues) + 5,
+            issues_createds: Number(amount_issues) + 2,
           },
           { where: { owner: user_id } }
         );
@@ -158,7 +177,7 @@ module.exports = {
       if (list) {
         const updated_scores = await Scores.update(
           {
-            lists_createds: Number(amount_lists) + 5,
+            lists_createds: Number(amount_lists) + 2,
           },
           { where: { owner: user_id } }
         );
@@ -196,7 +215,7 @@ module.exports = {
       if (anotation) {
         const updated_scores = await Scores.update(
           {
-            anotations: Number(amount_anotations) + 5,
+            anotations: Number(amount_anotations) + 2,
           },
           { where: { owner: user_id } }
         );

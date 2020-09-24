@@ -1,17 +1,16 @@
+/* eslint-disable quotes */
 /* eslint-disable camelcase */
-const User = require('../model/User');
-const Questions = require('../model/Questions');
+const User = require("../model/User");
+const Questions = require("../model/Questions");
 
 module.exports = {
   // "LISTAR Questions"
   async index(req, res) {
-    const {
-      user_logado,
-    } = req.params;
+    const { user_logado } = req.params;
 
     const user = await User.findByPk(user_logado, {
       include: {
-        association: 'questions',
+        association: "questions",
         through: {
           attributes: [],
         },
@@ -23,15 +22,8 @@ module.exports = {
 
   // "SET QUESTIONS"
   async store(req, res) {
-    const {
-      user_logado,
-    } = req.params;
-    const {
-      experience,
-      tool,
-      use_case,
-      interests,
-    } = req.body;
+    const { user_logado } = req.params;
+    const { experience, tool, use_case, interests } = req.body;
 
     let user = null;
 
@@ -39,13 +31,13 @@ module.exports = {
     user = await User.findByPk(user_logado);
     if (!user) {
       return res.status(400).json({
-        error: 'Account not found',
+        error: "Account not found",
       });
     }
 
     if (!(Number(user_logado) === Number(req.userID))) {
       return res.status(400).send({
-        error: 'Only can reply your questions!',
+        error: "Only can reply your questions!",
       });
     }
 
@@ -63,26 +55,26 @@ module.exports = {
 
       if (questions) {
         const userForUpdate = user.id;
-        await User.update({
-          completed: true,
-        }, {
-          where: {
-            id: userForUpdate,
+        await User.update(
+          {
+            completed: true,
           },
-        });
+          {
+            where: {
+              id: userForUpdate,
+            },
+          }
+        );
       }
     } catch (err) {
       console.log(err);
       return res.status(400).json({
-        message: 'Sorry Could not be replied!',
+        message: "Sorry Could not be replied!",
       });
     }
 
     // "RETORNO"
-    const {
-      id,
-      email,
-    } = user;
+    const { id, email } = user;
 
     return res.json({
       user: {
@@ -92,5 +84,4 @@ module.exports = {
       questions,
     });
   },
-
 };

@@ -102,13 +102,9 @@ routes.put(
   authMidleware,
   ScoresController.updateIssue
 );
+routes.put("/scores/list/:user_id", authMidleware, ScoresController.updateList);
 routes.put(
-  "/scores_/list/:user_id",
-  authMidleware,
-  ScoresController.updateList
-);
-routes.put(
-  "/scores_/anotation/:user_id",
+  "/scores/anotation/:user_id",
   authMidleware,
   ScoresController.updateAnotation
 );
