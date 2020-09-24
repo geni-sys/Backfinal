@@ -22,9 +22,22 @@ module.exports = {
             {
               association: "issues",
             },
+            {
+              association: "user",
+              attributes: {
+                exclude: [
+                  "createdAt",
+                  "password",
+                  "github",
+                  "completed",
+                  "destaque",
+                  "canny",
+                ],
+              },
+            },
           ],
           attributes: {
-            exclude: ["createdAt", "updatedAt", "owner"],
+            exclude: ["createdAt", "owner"],
           },
         });
 
@@ -33,7 +46,7 @@ module.exports = {
 
       const forFilter = Playlist.findAll({
         attributes: {
-          exclude: ["createdAt", "updatedAt", "owner"],
+          exclude: ["createdAt", "owner"],
         },
         where: {
           name: {
