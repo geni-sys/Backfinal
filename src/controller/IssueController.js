@@ -8,8 +8,10 @@ const IssuesMarked = require("../model/IssuesMarked");
 const UserMarked = require("../model/UserMarked");
 
 module.exports = {
+  // ISSUE ONE USER
   async index(request, response) {
     const { owner_id } = request.params;
+    console.log("aposjcoiadcoidcbn");
 
     let user = null;
 
@@ -20,7 +22,7 @@ module.exports = {
         },
       });
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
     }
 
     return response.json(user.issues);

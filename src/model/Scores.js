@@ -1,7 +1,7 @@
 /* eslint-disable quotes */
 const { Model, DataTypes } = require("sequelize");
 
-class Issue extends Model {
+class Scores extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -31,4 +31,4 @@ class Issue extends Model {
  * ::foreighKey: a chave dentro da tabela relacionando [ N - N ]
  */
 
-module.exports = Issue;
+module.exports = Scores;
