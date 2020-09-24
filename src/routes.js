@@ -8,6 +8,7 @@ const userAuthController = require("./controller/auth/UserAuthController");
 const userController = require("./controller/UserController");
 const QuestionsController = require("./controller/QuestionsController");
 const issueController = require("./controller/IssueController");
+const ScoresController = require("./controller/Scores/ScoresController");
 const UserStatusController = require("./controller/UserStatusController");
 const PlaylistController = require("./controller/PlaylistController");
 const ChallengeController = require("./controller/ChallengeController");
@@ -90,6 +91,22 @@ routes.put(
   "/admin/:admin_id/edit/issue/:issue_id",
   authMidleware,
   issueController.edit
+);
+
+// SCORES
+routes.get("/scores/:user_id", authMidleware, ScoresController.index);
+routes.post("/scores/:user_id", authMidleware, ScoresController.store);
+routes.put("/scores/:user_id", authMidleware, ScoresController.update);
+routes.put(
+  "/scores/issue/:user_id",
+  authMidleware,
+  ScoresController.updateIssue
+);
+routes.put("/scores/list/:user_id", authMidleware, ScoresController.updateList);
+routes.put(
+  "/scores/anotation/:user_id",
+  authMidleware,
+  ScoresController.updateAnotation
 );
 
 // "USER HANDLE STATUS"

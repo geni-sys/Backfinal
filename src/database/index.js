@@ -5,6 +5,7 @@ const hooks = require("./hooks.js");
 
 const User = require("../model/User");
 const Issue = require("../model/Issue");
+const Scores = require("../model/Scores");
 const Questions = require("../model/Questions");
 const UserStatus = require("../model/UserStatus");
 const Playlist = require("../model/Playlist");
@@ -26,6 +27,7 @@ User.beforeCreate(hooks.useHashToCripto);
 // "INITIAL DEFINITION"
 Questions.init(connection);
 Issue.init(connection);
+Scores.init(connection);
 UserStatus.init(connection);
 Playlist.init(connection);
 PlaylistAndIssue.init(connection);
@@ -40,6 +42,7 @@ Notifications.init(connection);
 // "ASSOCIATIONS"
 User.associate(connection.models);
 Issue.associate(connection.models);
+Scores.associate(connection.models);
 Playlist.associate(connection.models);
 UserStatus.associate(connection.models);
 Questions.associate(connection.models);
