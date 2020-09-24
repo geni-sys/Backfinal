@@ -11,11 +11,15 @@ module.exports = {
   // ISSUE ONE USER
   async index(request, response) {
     const { owner_id } = request.params;
-    console.log("aposjcoiadcoidcbn");
 
     let user = null;
 
     try {
+      const verify = await User.findByPk(owner_id);
+      if (!verify) {
+        return response.status(400).json({ error: "User not found" });
+      }
+
       user = await User.findByPk(owner_id, {
         include: {
           association: "issues",

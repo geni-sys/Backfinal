@@ -163,7 +163,7 @@ module.exports = {
       include: ["lists"],
     });
 
-    return res.json(user);
+    return res.json(user || { lists: [] });
   },
 
   // "PEGA UMA ÚNICA LIST"

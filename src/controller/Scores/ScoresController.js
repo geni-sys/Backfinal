@@ -7,7 +7,7 @@ module.exports = {
   // get scores from user
   async index(request, response) {
     const { user_id } = request.params;
-    const { email } = request.body;
+    const { email } = request.query;
 
     try {
       if (Number(user_id) === 0) {
