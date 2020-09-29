@@ -15,6 +15,7 @@ const ChallengeController = require("./controller/ChallengeController");
 const MarkedController = require("./controller/MarkedController");
 const FeedbackController = require("./controller/FeedbackController");
 const UserNotificationsController = require("./controller/Notifications/UserNotificationsController");
+const AdminLogsController = require("./controller/AdminLogs/AdminLogsController");
 // EXTRAX
 const ExtraIssuesController = require("./controller/ExtraIssuesController");
 
@@ -240,5 +241,9 @@ routes.post(
   "/notifications/:sender/to/:receiver",
   UserNotificationsController.store
 );
+
+// HANDLE ADMIN LOG
+routes.get("/admin_logs/:admin", AdminLogsController.index);
+routes.post("/admin_logs/:admin", AdminLogsController.store);
 
 module.exports = routes;

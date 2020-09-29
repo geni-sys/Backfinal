@@ -10,6 +10,10 @@ module.exports = {
     try {
       const feedbacks = await Feedbacks.findAll({
         attributes: ["id", "user_id", "title", "message", "stars"],
+        include: {
+          association: "user",
+          attributes: ["name", "email", "github", "id", "canny"],
+        },
         limit: 10,
       });
 
@@ -59,6 +63,10 @@ module.exports = {
     try {
       const feeds = await Feedbacks.findByPk(feed, {
         attributes: ["id", "user_id", "title", "message", "stars"],
+        include: {
+          association: "user",
+          attributes: ["name", "email", "github", "id", "canny"],
+        },
       });
 
       return response.json(feeds);

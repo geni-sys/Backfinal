@@ -17,6 +17,7 @@ const PlaylistMarked = require("../model/PlaylistMarked");
 const UserMarked = require("../model/UserMarked");
 const Feedbacks = require("../model/Feedbacks");
 const Notifications = require("../model/Notifications");
+const AdminLogs = require("../model/AdminLogs");
 
 const connection = new Sequelize(dbConfig);
 
@@ -38,6 +39,7 @@ PlaylistMarked.init(connection);
 UserMarked.init(connection);
 Feedbacks.init(connection);
 Notifications.init(connection);
+AdminLogs.init(connection);
 
 // "ASSOCIATIONS"
 User.associate(connection.models);
@@ -54,5 +56,6 @@ PlaylistMarked.associate(connection.models);
 UserMarked.associate(connection.models);
 Feedbacks.associate(connection.models);
 Notifications.associate(connection.models);
+AdminLogs.associate(connection.models);
 
 module.exports = connection;
