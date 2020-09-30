@@ -8,6 +8,7 @@ const Playlist = require("../model/Playlist");
 const PlaylistAndIssue = require("../model/PlaylistAndIssue");
 const Issue = require("../model/Issue");
 const PlaylistMarked = require("../model/PlaylistMarked");
+const UserMarked = require("../model/UserMarked");
 
 module.exports = {
   // "LISTAR PLAYLIST"
@@ -86,6 +87,55 @@ module.exports = {
       console.log(err.message);
       return response.status(400).json();
     }
+  },
+
+  // PLAYLIST FILTEREDS
+  async getListFiltereds(request, response) {
+    const { owner_id } = request.params;
+
+    let users = null;
+
+    try {
+      users = UserMarked.findAll({
+        attributes: ["id", "owner", "user_mark", "updatedAt"],
+        include: {
+          association: "marked",
+          attributes: ["name", "updatedAt"],
+        },
+        where: {
+          owner: owner_id,
+        },
+      });
+
+      const newFilter = await users.map(async (element) => {
+        const extrapolate = JSON.parse(JSON.stringify(element));
+        const { user_mark } = extrapolate;
+        if (!user_mark) {
+          return null;
+        }
+
+        const playlists = await Playlist.findAll({
+          include: [
+            {
+              association: "user",
+              attributes: ["id", "name", "email", "github", "updatedAt"],
+            },
+          ],
+          where: {
+            owner: Number(user_mark),
+          },
+        });
+
+        return playlists;
+      });
+
+      return response.json(newFilter[0] || []);
+    } catch (err) {
+      console.log(err.message);
+    }
+
+    return { message: "No PLAYLIST found!" };
+    // return response.json(users);
   },
 
   // "CREATE PLAYLIST"

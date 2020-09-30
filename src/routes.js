@@ -116,6 +116,10 @@ routes.get("/user/:user_id/status", authMidleware, UserStatusController.index);
 
 // "HANDLE PLAYLIST"
 routes.get("/playlists", PlaylistController.index);
+routes.get(
+  "/overview/:owner_id/playlists",
+  PlaylistController.getListFiltereds
+);
 routes.get("/playlist/:list_id", PlaylistController.unc);
 routes.get("/users/:user_id/lists", PlaylistController.unic);
 routes.post(
