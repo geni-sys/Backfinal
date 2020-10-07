@@ -11,6 +11,7 @@ const issueController = require("./controller/IssueController");
 const ScoresController = require("./controller/Scores/ScoresController");
 const UserStatusController = require("./controller/UserStatusController");
 const PlaylistController = require("./controller/PlaylistController");
+const BoxController = require("./controller/Boxs/BoxController");
 const ChallengeController = require("./controller/ChallengeController");
 const MarkedController = require("./controller/MarkedController");
 const FeedbackController = require("./controller/FeedbackController");
@@ -115,22 +116,35 @@ routes.post("/user/:user_id/status", authMidleware, UserStatusController.store);
 routes.get("/user/:user_id/status", authMidleware, UserStatusController.index);
 
 // "HANDLE PLAYLIST"
-routes.get("/playlists", PlaylistController.index);
+routes.get("/playlists", authMidleware, PlaylistController.index);
 routes.get(
   "/overview/:owner_id/playlists",
+  authMidleware,
   PlaylistController.getListFiltereds
 );
-routes.get("/playlist/:list_id", PlaylistController.unc);
-routes.get("/users/:user_id/lists", PlaylistController.unic);
+routes.get("/playlist/:list_id", authMidleware, PlaylistController.unc);
+routes.get("/users/:user_id/lists", authMidleware, PlaylistController.unic);
 routes.post(
   "/users/:user_id/create/playlist",
   authMidleware,
   PlaylistController.store
 );
 routes.post("/create/list/:id", authMidleware, PlaylistController.create);
-routes.put("/playlists/:id/stars", PlaylistController.stars);
-routes.put("/playlists/:id/users_learning", PlaylistController.learning);
-routes.delete("/playlists/:list_id", PlaylistController.delete);
+routes.put("/playlists/:id/stars", authMidleware, PlaylistController.stars);
+routes.put(
+  "/playlists/:id/users_learning",
+  authMidleware,
+  PlaylistController.learning
+);
+routes.delete("/playlists/:list_id", authMidleware, PlaylistController.delete);
+
+// HANDLE BOXs
+routes.get("/boxs", authMidleware, BoxController.index);
+routes.post(
+  "/boxs/:playlist/:sender/to/:guest",
+  authMidleware,
+  BoxController.store
+);
 
 // "HANDLE CHALLENGES"
 routes.get("/challenges", ChallengeController.index);

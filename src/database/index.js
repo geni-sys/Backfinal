@@ -9,6 +9,7 @@ const Scores = require("../model/Scores");
 const Questions = require("../model/Questions");
 const UserStatus = require("../model/UserStatus");
 const Playlist = require("../model/Playlist");
+const Boxs = require("../model/Boxs");
 const PlaylistAndIssue = require("../model/PlaylistAndIssue");
 const Challenge = require("../model/Challenge");
 const AdminChangeIssue = require("../model/AdminChangeIssue");
@@ -40,6 +41,7 @@ UserMarked.init(connection);
 Feedbacks.init(connection);
 Notifications.init(connection);
 AdminLogs.init(connection);
+Boxs.init(connection);
 
 // "ASSOCIATIONS"
 User.associate(connection.models);
@@ -57,5 +59,6 @@ UserMarked.associate(connection.models);
 Feedbacks.associate(connection.models);
 Notifications.associate(connection.models);
 AdminLogs.associate(connection.models);
+Boxs.associate(connection.models);
 
 module.exports = connection;
