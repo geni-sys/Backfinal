@@ -50,6 +50,18 @@ module.exports = {
           .json({ message: "User not found (SENDER)" });
       }
 
+      const boxVerification = await Boxs.findAll({
+        where: {
+          playlist,
+          guest,
+          sender,
+        },
+      });
+
+      if (!(boxVerification.length === 0)) {
+        return response.json({ message: "Anotações já iniciadas!" });
+      }
+
       const box = await Boxs.create({
         playlist,
         guest,
