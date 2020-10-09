@@ -7,13 +7,14 @@ class Boxs extends Model {
       {
         guest: DataTypes.INTEGER,
         sender: DataTypes.INTEGER,
+        now: DataTypes.INTEGER,
         playlist: DataTypes.INTEGER,
         message: DataTypes.STRING,
       },
       {
         sequelize,
         tableName: "box",
-      }
+      },
     );
   }
 

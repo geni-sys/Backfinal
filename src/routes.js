@@ -12,6 +12,7 @@ const ScoresController = require("./controller/Scores/ScoresController");
 const UserStatusController = require("./controller/UserStatusController");
 const PlaylistController = require("./controller/PlaylistController");
 const BoxController = require("./controller/Boxs/BoxController");
+const BoxReportsController = require("./controller/Boxs/BoxReportsController");
 const ChallengeController = require("./controller/ChallengeController");
 const MarkedController = require("./controller/MarkedController");
 const FeedbackController = require("./controller/FeedbackController");
@@ -138,12 +139,18 @@ routes.put(
 );
 routes.delete("/playlists/:list_id", authMidleware, PlaylistController.delete);
 
-// HANDLE BOXs
+// HANDLE BOXs | REPORTS
 routes.get("/boxs", authMidleware, BoxController.index);
+routes.get("/boxs_reports/:user_id", authMidleware, BoxReportsController.index);
 routes.post(
   "/boxs/:playlist/:sender/to/:guest",
   authMidleware,
   BoxController.store
+);
+routes.post(
+  "/boxs_reports/:user_id",
+  authMidleware,
+  BoxReportsController.store
 );
 
 // "HANDLE CHALLENGES"

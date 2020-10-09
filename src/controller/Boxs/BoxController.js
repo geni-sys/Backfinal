@@ -46,7 +46,7 @@ module.exports = {
 
   async store(request, response) {
     const { playlist, guest, sender } = request.params;
-    const { message } = request.body;
+    const { message, now } = request.body;
 
     try {
       const user_guest = await User.findByPk(guest);
@@ -76,6 +76,7 @@ module.exports = {
         playlist,
         guest,
         sender,
+        now,
         message,
       });
 
