@@ -21,6 +21,16 @@ module.exports = {
       }
 
       box = await Boxs.findAll({
+        include: [
+          {
+            association: "enviar",
+            attributes: ["id", "name", "email", "github"],
+          },
+          {
+            association: "convidado",
+            attributes: ["id", "name", "email", "github"],
+          },
+        ],
         where: {
           playlist,
           guest,
@@ -50,17 +60,17 @@ module.exports = {
           .json({ message: "User not found (SENDER)" });
       }
 
-      const boxVerification = await Boxs.findAll({
-        where: {
-          playlist,
-          guest,
-          sender,
-        },
-      });
+      // const boxVerification = await Boxs.findAll({
+      //   where: {
+      //     playlist,
+      //     guest,
+      //     sender,
+      //   },
+      // });
 
-      if (!(boxVerification.length === 0)) {
-        return response.json({ message: "Anotações já iniciadas!" });
-      }
+      // if (!(boxVerification.length === 0)) {
+      //   return response.json({ message: "Anotações já iniciadas!" });
+      // }
 
       const box = await Boxs.create({
         playlist,
