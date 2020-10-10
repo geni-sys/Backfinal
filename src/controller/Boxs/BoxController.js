@@ -30,6 +30,10 @@ module.exports = {
             association: "convidado",
             attributes: ["id", "name", "email", "github"],
           },
+          {
+            association: "agora",
+            attributes: ["id", "name", "email", "github"],
+          },
         ],
         where: {
           playlist,

@@ -32,6 +32,10 @@ class Boxs extends Model {
       foreignKey: "guest",
       as: "convidado",
     });
+    this.belongsTo(models.User, {
+      foreignKey: "now",
+      as: "agora",
+    });
   }
 }
 

@@ -32,7 +32,7 @@ module.exports = {
     return response.json(user.issues);
   },
 
-  // Filer ISSUEs
+  // Filter ISSUEs
   async getIssuesFiltereds(request, response) {
     const { owner_id } = request.params;
 
@@ -102,7 +102,9 @@ module.exports = {
 
       const newFilter = await forFilter.map(async (element) => {
         const extrapolate = JSON.parse(JSON.stringify(element));
-        const { id, title, tags, link, user, body, language } = extrapolate;
+        const {
+          id, title, tags, link, user, body, language,
+        } = extrapolate;
 
         const issueStarred = await IssuesMarked.findOne({
           where: {
@@ -177,7 +179,9 @@ module.exports = {
       const newFilter = await forFilter.map(async (element) => {
         const { body, language } = element.dataValues;
         const extrapolate = JSON.parse(JSON.stringify(element));
-        const { id, title, tags, link, user } = extrapolate;
+        const {
+          id, title, tags, link, user,
+        } = extrapolate;
 
         const issueStarred = await IssuesMarked.findOne({
           where: {
@@ -238,7 +242,9 @@ module.exports = {
 
   async store(request, response) {
     const { owner_id } = request.params;
-    const { title, body, tags, link, language } = request.body;
+    const {
+      title, body, tags, link, language,
+    } = request.body;
 
     let issue = null;
     try {
@@ -313,7 +319,9 @@ module.exports = {
 
   async edit(request, response) {
     const { admin_id, issue_id } = request.params;
-    const { title, link, tags, body } = request.body;
+    const {
+      title, link, tags, body,
+    } = request.body;
 
     console.log(body);
 
@@ -348,7 +356,7 @@ module.exports = {
           where: {
             id: issue_id,
           },
-        }
+        },
       );
       if (issue) {
         console.log(`issue Editada: ${issue}`);

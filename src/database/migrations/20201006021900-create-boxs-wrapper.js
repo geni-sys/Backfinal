@@ -26,6 +26,10 @@ module.exports = {
     now: {
       type: Sequelize.INTEGER,
       allowNull: false,
+      references: {
+        model: "users",
+        key: "id",
+      },
     },
     message: {
       type: Sequelize.TEXT,
