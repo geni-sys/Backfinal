@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable camelcase */
 /* eslint-disable quotes */
 const Boxs = require("../../model/Boxs");
