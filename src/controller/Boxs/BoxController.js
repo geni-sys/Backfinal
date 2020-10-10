@@ -60,17 +60,19 @@ module.exports = {
           .json({ message: "User not found (SENDER)" });
       }
 
-      // const boxVerification = await Boxs.findAll({
-      //   where: {
-      //     playlist,
-      //     guest,
-      //     sender,
-      //   },
-      // });
+      const boxVerification = await Boxs.findAll({
+        where: {
+          playlist,
+          guest,
+          sender,
+        },
+      });
 
-      // if (!(boxVerification.length === 0)) {
-      //   return response.json({ message: "Anotações já iniciadas!" });
-      // }
+      if (message === '...') {
+        if (!(boxVerification.length === 0)) {
+          return response.send(boxVerification);
+        }
+      }
 
       const box = await Boxs.create({
         playlist,

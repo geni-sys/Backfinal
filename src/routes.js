@@ -149,7 +149,6 @@ routes.post(
 );
 routes.post(
   "/boxs_reports/:user_id",
-  authMidleware,
   BoxReportsController.store
 );
 
