@@ -32,6 +32,9 @@ module.exports = {
               [Op.like]: "%request%",
             },
           },
+          order: [
+            ['id', 'DESC'],
+          ],
           include: [
             {
               association: "de",
@@ -52,6 +55,9 @@ module.exports = {
           attributes: {
             exclude: ["createdAt"],
           },
+          order: [
+            ['id', 'DESC'],
+          ],
           where: {
             receiver,
             type: {
@@ -78,6 +84,9 @@ module.exports = {
           attributes: {
             exclude: ["createdAt"],
           },
+          order: [
+            ['id', 'DESC'],
+          ],
           where: {
             receiver,
             type: {
