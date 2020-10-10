@@ -13,6 +13,7 @@ const Boxs = require("../model/Boxs");
 const BoxsReports = require("../model/BoxsReports");
 const PlaylistAndIssue = require("../model/PlaylistAndIssue");
 const Challenge = require("../model/Challenge");
+const DashboardExcludeds = require("../model/DashboardExcludeds");
 const AdminChangeIssue = require("../model/AdminChangeIssue");
 const IssuesMarked = require("../model/IssuesMarked");
 const PlaylistMarked = require("../model/PlaylistMarked");
@@ -44,6 +45,7 @@ Notifications.init(connection);
 AdminLogs.init(connection);
 Boxs.init(connection);
 BoxsReports.init(connection);
+DashboardExcludeds.init(connection);
 
 // "ASSOCIATIONS"
 User.associate(connection.models);
