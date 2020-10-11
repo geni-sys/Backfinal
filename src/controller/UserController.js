@@ -34,7 +34,9 @@ module.exports = {
 
       const newFilter = await forFilter.map(async (element) => {
         const extrapolate = JSON.parse(JSON.stringify(element));
-        const { id, name, email, github, completed, destaque } = extrapolate;
+        const {
+          id, name, email, github, completed, destaque,
+        } = extrapolate;
 
         const userStarred = await UserMarked.findOne({
           where: {
@@ -80,6 +82,9 @@ module.exports = {
           attributes: {
             exclude: ["password"],
           },
+          where: {
+            excluded: false,
+          },
         });
       } else {
         users = await User.findAll({
@@ -90,6 +95,7 @@ module.exports = {
             name: {
               [Op.like]: `%${query}%`,
             },
+            excluded: false,
           },
         });
       }
@@ -126,7 +132,9 @@ module.exports = {
         },
       });
 
-      const { id, name, email, github, completed, questions } = users[0];
+      const {
+        id, name, email, github, completed, questions,
+      } = users[0];
 
       if (!eu) {
         eu = "";
@@ -239,7 +247,9 @@ module.exports = {
         });
       }
       if (adm.canny) {
-        user = await User.destroy({
+        user = await User.update({
+          excluded: true,
+        }, {
           where: {
             id: user_id,
           },
@@ -273,7 +283,7 @@ module.exports = {
             where: {
               id: admin_id,
             },
-          }
+          },
         );
 
         return res.json(edited);
@@ -301,7 +311,7 @@ module.exports = {
             id: user_id,
           },
           returning: true,
-        }
+        },
       );
 
       console.log(bio);
@@ -321,6 +331,7 @@ module.exports = {
     // });
   },
 
+  // CHANGE PASSWORD
   async password(req, res) {
     const { oldPassword, newPassword } = req.body;
     const { user_id } = req.params;
@@ -350,7 +361,7 @@ module.exports = {
               id: user_id,
             },
             returning: true,
-          }
+          },
         );
 
         return res.json({
@@ -371,6 +382,7 @@ module.exports = {
     // });
   },
 
+  // GET TOKENS
   async token(req, res) {
     const { user_id } = req.params;
 

@@ -12,10 +12,11 @@ class User extends Model {
         canny: DataTypes.BOOLEAN,
         completed: DataTypes.BOOLEAN,
         destaque: DataTypes.BOOLEAN,
+        excluded: DataTypes.BOOLEAN,
       },
       {
         sequelize,
-      }
+      },
     );
   }
 

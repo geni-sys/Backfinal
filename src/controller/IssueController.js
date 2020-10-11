@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable quotes */
 /* eslint-disable camelcase */
 const { Op } = require("sequelize");
@@ -6,6 +7,7 @@ const Issue = require("../model/Issue");
 const User = require("../model/User");
 const IssuesMarked = require("../model/IssuesMarked");
 const UserMarked = require("../model/UserMarked");
+const Playlist = require("../model/PlaylistAndIssue");
 
 module.exports = {
   // ISSUE ONE USER
@@ -293,28 +295,94 @@ module.exports = {
             "Only admin can delete an issue. Do a requisition for an admin",
         });
       }
-      let issue = Issue.findByPk(issue_id);
+      let issue = await Issue.findByPk(issue_id);
       if (!issue) {
         return response.status(400).json({
           message: "Issue does not exists!",
         });
       }
 
+      // todos registros das listas/marcações onde a issue está
+      const inPlaylist = await Playlist.findAll({
+        where: {
+          issue: issue_id,
+          list: 1,
+        },
+      });
+      const inMarkeds = await IssuesMarked.findAll({
+        where: {
+          issue_id,
+        },
+      });
+
+      // console.log(`INLISTLENGHT: ${(await inPlaylist).length}`);
+      console.log(`INMARKEDLENGHT: ${(inMarkeds).length}`);
+      if (inPlaylist.length > 0) {
+        console.log("PERCTENCE A UMA LISTA");
+        // apaga as relações de issue-list
+        const listDelete = await inPlaylist.map(async (element) => {
+          const extrapolate = JSON.parse(JSON.stringify(element));
+          const { id } = extrapolate;
+
+          const recordsDeleted = await Playlist.destroy({
+            where: {
+              id: Number(id),
+            },
+          });
+
+          return recordsDeleted;
+        });
+        if (listDelete) {
+          console.log(`issue-list deletada: ${issue}`);
+        }
+
+        // console.log(listDelete);
+        // issue = await Issue.destroy({
+        //   where: {
+        //     id: Number(issue_id),
+        //   },
+        // });
+
+        // if (issue) {
+        //   console.log(`issue deletada: ${issue}`);
+        //   return response.json({ message: `issue deletada: ${issue}` });
+        // }
+      }
+      if (inMarkeds.length > 0) {
+        console.log("PERCTENCE A UMA MARCAÇÃO");
+        // apaga as relações de issue-markeds
+        const markedDelete = await inMarkeds.map(async (element) => {
+          const extrapolate = JSON.parse(JSON.stringify(element));
+          const { id } = extrapolate;
+
+          const recordsDeleted = await IssuesMarked.destroy({
+            where: {
+              id: Number(id),
+            },
+          });
+
+          return recordsDeleted;
+        });
+
+        console.log(markedDelete);
+      }
+
       issue = await Issue.destroy({
         where: {
-          id: issue_id,
+          id: Number(issue_id),
         },
       });
       if (issue) {
         console.log(`issue deletada: ${issue}`);
+        return response.json({ message: `issue deletada: ${issue}` });
       }
 
-      return response.json();
+      return response.status(400).json({ error: 'Can not delete issue' });
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
     }
 
-    return response.status(400).json();
+    return response.status(400).json({ error: 'Can not delete issue' });
   },
 
   async edit(request, response) {

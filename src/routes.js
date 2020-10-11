@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 /* eslint-disable comma-dangle */
 /* eslint-disable quotes */
 const routes = require("express").Router();
@@ -18,7 +19,7 @@ const MarkedController = require("./controller/MarkedController");
 const FeedbackController = require("./controller/FeedbackController");
 const UserNotificationsController = require("./controller/Notifications/UserNotificationsController");
 const AdminLogsController = require("./controller/AdminLogs/AdminLogsController");
-const dashboardexcludedsController = require("./controller/Dashboard/dashboardexcludedsController");
+const dashboardexcludedsController = require("./controller/Dashboard/DashboardexcludedsController");
 // EXTRAX
 const ExtraIssuesController = require("./controller/ExtraIssuesController");
 
