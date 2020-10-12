@@ -54,6 +54,11 @@ routes.delete(
   userController.destroy
 );
 routes.delete(
+  "/users/:user_logado/desactive_account",
+  authMidleware,
+  userController.desactiveUserAccount
+);
+routes.delete(
   "/admin/:admin/delete/user/:user_id",
   authMidleware,
   userController.delete
@@ -271,6 +276,7 @@ routes.post(
 // HANDLE ADMIN LOG
 routes.get("/admin_logs/:admin", AdminLogsController.index);
 routes.post("/admin_logs/:admin", AdminLogsController.store);
+routes.put("/admin_logs/:admin", AdminLogsController.update);
 
 // HANDLE DASHBOARD_EXCLUDEDS
 routes.get("/dashboard/excludeds", dashboardexcludedsController.index);

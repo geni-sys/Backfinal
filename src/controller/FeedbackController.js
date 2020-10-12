@@ -14,6 +14,9 @@ module.exports = {
           association: "user",
           attributes: ["name", "email", "github", "id", "canny"],
         },
+        order: [
+          ['id', 'DESC'],
+        ],
         limit: 10,
       });
 
@@ -33,7 +36,7 @@ module.exports = {
 
     try {
       const user = await User.findByPk(user_id);
-      if (!user) {
+      if (!user || user.excluded) {
         return response.status(400).json({
           message: "Only users can create messages",
         });

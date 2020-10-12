@@ -29,10 +29,7 @@ module.exports = {
                 exclude: [
                   "createdAt",
                   "password",
-                  "github",
                   "completed",
-                  "destaque",
-                  "canny",
                 ],
               },
             },
@@ -58,7 +55,9 @@ module.exports = {
 
       const newFilter = await forFilter.map(async (element) => {
         const extrapolate = JSON.parse(JSON.stringify(element));
-        const { id, name, stars, users_learning } = extrapolate;
+        const {
+          id, name, stars, users_learning,
+        } = extrapolate;
 
         const listStarred = await PlaylistMarked.findOne({
           where: {
@@ -275,7 +274,7 @@ module.exports = {
             where: {
               id,
             },
-          }
+          },
         );
       } else {
         const less = parseInt(list.stars) - 1;
@@ -289,7 +288,7 @@ module.exports = {
               where: {
                 id,
               },
-            }
+            },
           );
         }
       }
@@ -326,7 +325,7 @@ module.exports = {
             where: {
               id,
             },
-          }
+          },
         );
       } else {
         const less = parseInt(list.users_learning) - 1;
@@ -340,7 +339,7 @@ module.exports = {
               where: {
                 id,
               },
-            }
+            },
           );
         }
       }

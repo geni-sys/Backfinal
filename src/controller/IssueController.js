@@ -18,7 +18,7 @@ module.exports = {
 
     try {
       const verify = await User.findByPk(owner_id);
-      if (!verify) {
+      if (!verify || verify.excluded) {
         return response.status(400).json({ error: "User not found" });
       }
 
@@ -45,7 +45,10 @@ module.exports = {
         attributes: ["id", "owner", "user_mark", "updatedAt"],
         include: {
           association: "marked",
-          attributes: ["name", "updatedAt"],
+          attributes: ["name", "updatedAt", "excluded"],
+          where: {
+            excluded: false,
+          },
         },
         where: {
           owner: owner_id,
@@ -97,6 +100,9 @@ module.exports = {
           {
             association: "user",
             attributes: ["id", "name", "email"],
+            where: {
+              excluded: false,
+            },
           },
         ],
         limit: 1,
@@ -150,11 +156,14 @@ module.exports = {
 
       if (!query) {
         issue = await Issue.findAll({
-          attributes: ["id", "title", "body", "tags", "language", "link"],
+          attributes: ["id", "title", "body", "tags", "language", "link", "featured"],
           include: [
             {
               association: "user",
               attributes: ["id", "name", "github"],
+              where: {
+                excluded: false,
+              },
             },
           ],
           limit: 10,
@@ -173,6 +182,9 @@ module.exports = {
           {
             association: "user",
             attributes: ["id", "name", "email"],
+            where: {
+              excluded: false,
+            },
           },
         ],
         limit: 10,
@@ -229,11 +241,14 @@ module.exports = {
           {
             association: "user",
             attributes: ["id", "name", "email"],
+            where: {
+              excluded: false,
+            },
           },
         ],
       });
 
-      return response.json(issue);
+      return response.json(issue || {});
     } catch (err) {
       console.log(err.message);
       return response.status(400).send({
@@ -450,6 +465,9 @@ module.exports = {
           {
             association: "user",
             attributes: ["id", "name", "github"],
+            where: {
+              excluded: false,
+            },
           },
         ],
         limit: 4,

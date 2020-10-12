@@ -220,6 +220,42 @@ module.exports = {
       error: "Account not regitered",
     });
   },
+  async desactiveUserAccount(req, res) {
+    const { user_logado } = req.params;
+
+    let user = null;
+    user = await User.findOne({
+      where: {
+        id: user_logado,
+      },
+    });
+    if (!user) {
+      return res.status(400).json({
+        error: "Account not found",
+      });
+    }
+
+    // caso esta identificado corretamente
+    try {
+      user = await User.update({
+        excluded: true,
+      }, {
+        where: {
+          id: user_logado,
+        },
+      });
+
+      if (user) {
+        return res.status(200).send("sucess");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
+    return res.status(404).send({
+      error: "Account not regitered",
+    });
+  },
 
   // "ADMIN DELETE ACCOUNT OF USER"
   async delete(req, res) {

@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 const { Model, DataTypes } = require("sequelize");
 
 class AdminChangeIssue extends Model {
@@ -11,7 +12,7 @@ class AdminChangeIssue extends Model {
       {
         sequelize,
         tableName: "admin_change_issue",
-      }
+      },
     );
   }
 
