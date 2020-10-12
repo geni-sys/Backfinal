@@ -11,7 +11,7 @@ class UserMarked extends Model {
       {
         sequelize,
         tableName: "user_marked",
-      }
+      },
     );
   }
 

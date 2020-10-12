@@ -22,7 +22,7 @@ module.exports = {
         },
       });
 
-      if (!user) {
+      if (!user || user.excluded) {
         return res.status(400).send({
           error: "User not found",
         });
@@ -64,7 +64,9 @@ module.exports = {
   // "CRIAR USUÁRIO" || "/admin/:adm/register"
   async store(req, res) {
     const { adm } = req.params;
-    const { name, email, password, canny } = req.body;
+    const {
+      name, email, password, canny,
+    } = req.body;
     let { github } = req.body;
     const completed = false;
 
@@ -138,7 +140,7 @@ module.exports = {
         },
       });
 
-      if (!user) {
+      if (!user || user.excluded) {
         return res.status(400).send({
           error: "User not found",
         });

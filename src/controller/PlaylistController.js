@@ -32,6 +32,9 @@ module.exports = {
                   "completed",
                 ],
               },
+              where: {
+                excluded: false,
+              },
             },
           ],
           attributes: {
@@ -46,6 +49,14 @@ module.exports = {
         attributes: {
           exclude: ["createdAt", "owner"],
         },
+        include: [
+          {
+            association: 'user',
+            where: {
+              excluded: false,
+            },
+          },
+        ],
         where: {
           name: {
             [Op.like]: `%${query}%`,
@@ -100,6 +111,9 @@ module.exports = {
         include: {
           association: "marked",
           attributes: ["name", "updatedAt"],
+          where: {
+            excluded: false,
+          },
         },
         where: {
           owner: owner_id,
@@ -117,7 +131,10 @@ module.exports = {
           include: [
             {
               association: "user",
-              attributes: ["id", "name", "email", "github", "updatedAt"],
+              attributes: ["id", "name", "email", "github", "updatedAt", "excluded"],
+              where: {
+                excluded: false,
+              },
             },
           ],
           where: {
@@ -144,7 +161,7 @@ module.exports = {
 
     const user = await User.findByPk(user_id);
 
-    if (!user) {
+    if (!user || user.excluded) {
       return res.status(400).json({
         message: "Error user not found",
       });
@@ -207,6 +224,15 @@ module.exports = {
     const { user_id } = req.params;
 
     // verifyAuthencite(user_id, res, req)
+    const verify = await User.findAll({
+      where: {
+        id: user_id,
+        excluded: false,
+      },
+    });
+    if (verify.length === 0) {
+      return res.status(400).json({ error: "User not found" });
+    }
 
     const user = await User.findByPk(user_id, {
       include: ["lists"],
