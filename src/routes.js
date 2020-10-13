@@ -77,6 +77,7 @@ routes.get(
 );
 
 // "ISSUE"
+routes.get("/friends_issue/:owner_id", authMidleware, issueController.getIssuesFromFriennds);
 routes.get("/user/:owner_id/issues", authMidleware, issueController.index);
 routes.get(
   "/home/:owner_id/issues",

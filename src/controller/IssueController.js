@@ -61,6 +61,7 @@ module.exports = {
         if (!user_mark) {
           return null;
         }
+        console.log(`USER_MARKED: ${user_mark}`);
 
         const issues = await Issue.findAll({
           include: [
@@ -83,6 +84,59 @@ module.exports = {
     }
 
     return { message: "No Article found!" };
+    // return response.json(users);
+  },
+  async getIssuesFromFriennds(request, response) {
+    const { owner_id } = request.params;
+
+    let users = null;
+
+    try {
+      users = UserMarked.findAll({
+        attributes: ["id", "owner", "user_mark", "updatedAt"],
+        include: {
+          association: "marked",
+          attributes: ["name", "updatedAt", "excluded"],
+          where: {
+            excluded: false,
+          },
+        },
+        where: {
+          owner: owner_id,
+        },
+      });
+
+      const newFilter = await users.map(async (element) => {
+        const extrapolate = JSON.parse(JSON.stringify(element));
+        const { user_mark } = extrapolate;
+        if (!user_mark) {
+          return null;
+        }
+        console.log(`USER_MARKED: ${user_mark}`);
+
+        const issues = await Issue.findAll({
+          include: [
+            {
+              association: "user",
+              attributes: ["id", "name", "email", "github", "updatedAt"],
+            },
+          ],
+          where: {
+            owner: Number(user_mark),
+          },
+        });
+
+        return issues;
+      });
+
+      const friendRecords = [];
+      newFilter.map((friend) => friend.map((tech) => friendRecords.push(tech)));
+
+      return response.json(friendRecords || []);
+    } catch (err) {
+      console.log(err.message);
+      return response.status(400).json({ error: err.message });
+    }
     // return response.json(users);
   },
 
