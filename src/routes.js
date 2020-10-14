@@ -76,7 +76,7 @@ routes.get(
   QuestionsController.index
 );
 
-// "ISSUE"
+// "ISSUE" https://js.do/code/512790
 routes.get("/friends_issue/:owner_id", authMidleware, issueController.getIssuesFromFriennds);
 routes.get("/user/:owner_id/issues", authMidleware, issueController.index);
 routes.get(
